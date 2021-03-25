@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Capstone_Group_Project.Views.RegisterPage"
+             Shell.NavBarIsVisible="False">
+    
+    <ContentPage.Content>
+
+        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+
+            <!-- When we set Mode=OneWayToSource for the binding, it means that data (and automatic updates) only goes in one direction.
+            Specifically, data goes FROM the UI element TO the ViewModel (what's considered source in this case).
+            You'd think the UI element, which receives data from the user, is considered the source in this context, but I guess not. -->
+            <Label Text="Choose a new username" FontSize="Medium" HorizontalOptions="Center"/>
+            <Entry Text="{Binding EnteredUsername, Mode=OneWayToSource}" FontSize="Medium"/>
+
+            <Label Text="Choose a new password" FontSize="Medium" HorizontalOptions="Center"/>
+            <Entry Text="{Binding FirstEnteredPassword, Mode=OneWayToSource}" FontSize="Medium"/>
+
+            <Label Text="Confirm the new password" FontSize="Medium" HorizontalOptions="Center"/>
+            <Entry Text="{Binding SecondEnteredPassword, Mode=OneWayToSource}" FontSize="Medium"/>
+
+            <!-- Yeah, I have no idea why Mode=OneWayToSource, which works for a text input, doesn't work for a button,
+            but Mode=OneWay, which works for a label, does work for a button. -->
+            <Button Text="Register" Command="{Binding CreateNewAccountCommand, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>
+
+            <!-- Opposite of what we do for a text entry, when we set Mode=OneWay for the binding,
+            it means that data (and automatic updates) only goes in one direction, FROM the ViewModel TO the UI element,
+            which is what we want for the label below that displays any possible success or error messages. -->
+            <Label Text="{Binding DisplayedSuccessOrErrorMessage, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>
+
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</ContentPage>
