@@ -76,9 +76,9 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
 
         private async Task<bool> IsEnteredUsernameAlreadyInUserByAnotherUserAccount()
         {
-            Object result = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsObject(new IsUsernameAlreadyInUseRequestObject(enteredUsername));
+            //Object result = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsObject(new IsUsernameAlreadyInUseRequestObject(enteredUsername));
             //IsUsernameAlreadyInUseRequestObject sendToServerResult = (IsUsernameAlreadyInUseRequestObject)result;
-            errorMessage = result.ToString();
+            //errorMessage = result.ToString();
             return true;
         }
 
@@ -91,6 +91,7 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
 
         private bool DoesEnteredPasswordMeetLengthRequirements()
         {
+            // We may want passwords to be a minimum of 16 letters long so that they convert nicely to a 128 bit MD5 hash:
             if (firstEnteredPassword.Length < 10 || firstEnteredPassword.Length > 100)
             {
                 errorMessage = "ERROR, the entered passsword is not between 10 and 100 characters long!";

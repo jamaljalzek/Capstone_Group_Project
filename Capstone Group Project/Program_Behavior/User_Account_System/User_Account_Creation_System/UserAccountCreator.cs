@@ -13,41 +13,61 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
         public static String errorMessage;
 
         private String enteredUsername;
-        private String firstEnteredPassword;
-        private String secondEnteredPassword;
-        private byte[] publicKey;
-        private byte[] privateKey;
+        private String enteredPassword;
+        private String publicAndPrivateKey;
+        private String justThePublicKey;
 
 
         public static async Task <String> AttemptToCreateNewUserAccount(String enteredUsername, String firstEnteredPassword, String secondEnteredPassword)
         {
-            currentInstance = new UserAccountCreator
-            {
-                enteredUsername = enteredUsername,
-                firstEnteredPassword = firstEnteredPassword,
-                secondEnteredPassword = secondEnteredPassword,
-            };
-            currentInstance = null;
             bool areEnteredUserAccountDetailsValid = await UserAccountDetailsValidator.AreEnteredUserAccountDetailsValid(enteredUsername, firstEnteredPassword, secondEnteredPassword);
-            if (areEnteredUserAccountDetailsValid)
-            {
-                return "Account has been successfully created!";
-            }
-            else
-                return UserAccountDetailsValidator.errorMessage;
+            if (!areEnteredUserAccountDetailsValid)
+            //    return UserAccountDetailsValidator.errorMessage;
+            CreateNewUserAccount(enteredUsername, firstEnteredPassword);
+            return "Account has been successfully created!";
         }
 
 
-        private void CreateNewUserAccount()
+        private static void CreateNewUserAccount(String enteredUsername, String firstEnteredPassword)
         {
-
+            currentInstance = new UserAccountCreator
+            {
+                enteredUsername = enteredUsername,
+                enteredPassword = firstEnteredPassword
+            };
+            currentInstance.CreateNewPublicAndPrivateKeyPair();
+            currentInstance = null;
         }
 
 
         private void CreateNewPublicAndPrivateKeyPair()
         {
-            RSA rsa = RSA.Create();
-            RSAParameters rsaParameters = rsa.ExportParameters(true);
+            publicAndPrivateKey = AsymmetricEncryption.CreateNewPublicAndPrivateKeyAndReturnAsXmlString();
+            justThePublicKey = AsymmetricEncryption.ExtractPublicKeyAndReturnAsXmlString(publicAndPrivateKey);
+            //AsymmetricEncryptionAndDecryptionTest();
+            //SymmetricEncryptionAndDecryptionTest();
+        }
+
+
+        private void AsymmetricEncryptionAndDecryptionTest()
+        {
+            // Encryption test:
+            String ciphertext = AsymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String("THIS is AN encryption TEST!", justThePublicKey);
+            // Decryption test:
+            String plaintext = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(ciphertext, publicAndPrivateKey);
+            // Place a breakpoint on the below line to inspect the values of the above two variables:
+            return;
+        }
+
+
+        private void SymmetricEncryptionAndDecryptionTest()
+        {
+            // Encryption test:
+            String ciphertext = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String("THIS is AN encryption TEST!", enteredPassword);
+            // Decryption test:
+            String plaintext = SymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(ciphertext, enteredPassword);
+            // Place a breakpoint on the below line to inspect the values of the above two variables:
+            return;
         }
 
 
