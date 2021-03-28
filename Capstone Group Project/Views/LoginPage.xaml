@@ -6,9 +6,31 @@
              mc:Ignorable="d"
              x:Class="Capstone_Group_Project.Views.LoginPage"
              Shell.NavBarIsVisible="False">
+
     <ContentPage.Content>
+
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+
+            <Label Text="Username" FontSize="Medium" HorizontalOptions="Center"/>
+
+            <Entry Text="{Binding EnteredUsername, Mode=OneWayToSource}" FontSize="Medium"/>
+
+            <Label Text="Password" FontSize="Medium" HorizontalOptions="Center"/>
+
+            <Entry Text="{Binding EnteredPassword, Mode=OneWayToSource}" FontSize="Medium"/>
+            
+            <!-- For the first button below, we notice the Command keyword.
+            We associate, or "bind", a new Command when we use Command="{Binding LoginCommand}".
+            Each time the button below is tapped, it excecutes the Command associated with it.
+            This command, which is defined in the LoginViewModels.cs page, is an object which contains a reference to a function, called OnLoginClicked().
+            Basically, when the button below is clicked, it calls on the Command object, which executes OnLoginClicked(). -->
+            <Button Text="Login" Command="{Binding LoginCommand}" HorizontalOptions="Center"/>
+            
+            <!-- It's the same logic above for the next button below. -->
+            <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}" HorizontalOptions="Center"/>
+
         </StackLayout>
+        
     </ContentPage.Content>
+    
 </ContentPage>
