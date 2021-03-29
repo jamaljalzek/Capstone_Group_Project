@@ -27,6 +27,8 @@ namespace Capstone_Group_Project.ViewModels
         {
             if (EnteredUsername == null || FirstEnteredPassword == null || SecondEnteredPassword == null)
                 return;
+            DisplayedSuccessOrErrorMessage = "Checking entered account details...";
+            UpdateUserInterfaceElementBoundToGivenVariable("DisplayedSuccessOrErrorMessage");
             // We immediately display the result of attempting to create the new user account,
             // which will either be a success message, or an error message (which specifies what the error is and why):
             DisplayedSuccessOrErrorMessage = await UserAccountCreator.AttemptToCreateNewUserAccount(EnteredUsername, FirstEnteredPassword, SecondEnteredPassword);

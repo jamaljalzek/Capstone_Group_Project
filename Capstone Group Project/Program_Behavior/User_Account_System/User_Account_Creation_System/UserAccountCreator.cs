@@ -9,73 +9,47 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
 {
     class UserAccountCreator
     {
-        private static UserAccountCreator currentInstance;
         public static String errorMessage;
-
-        private String enteredUsername;
-        private String enteredPassword;
-        private String publicAndPrivateKey;
-        private String justThePublicKey;
 
 
         public static async Task <String> AttemptToCreateNewUserAccount(String enteredUsername, String firstEnteredPassword, String secondEnteredPassword)
         {
             bool areEnteredUserAccountDetailsValid = await UserAccountDetailsValidator.AreEnteredUserAccountDetailsValid(enteredUsername, firstEnteredPassword, secondEnteredPassword);
             if (!areEnteredUserAccountDetailsValid)
-            //    return UserAccountDetailsValidator.errorMessage;
-            CreateNewUserAccount(enteredUsername, firstEnteredPassword);
-            return "Account has been successfully created!";
+                return UserAccountDetailsValidator.errorMessage;
+            CreateNewUserAccountRequestObject createNewUserAccountRequestObject = new CreateNewUserAccountRequestObject(enteredUsername, firstEnteredPassword);
+            SendRequestToCreateNewUserAccountToCloud(createNewUserAccountRequestObject);
+            return "The new user account has been successfully created!";
         }
 
 
-        private static void CreateNewUserAccount(String enteredUsername, String firstEnteredPassword)
+        private static async void SendRequestToCreateNewUserAccountToCloud(CreateNewUserAccountRequestObject createNewUserAccountRequestObject)
         {
-            currentInstance = new UserAccountCreator
-            {
-                enteredUsername = enteredUsername,
-                enteredPassword = firstEnteredPassword
-            };
-            currentInstance.CreateNewPublicAndPrivateKeyPair();
-            currentInstance = null;
-        }
-
-
-        private void CreateNewPublicAndPrivateKeyPair()
-        {
-            publicAndPrivateKey = AsymmetricEncryption.CreateNewPublicAndPrivateKeyAndReturnAsXmlString();
-            justThePublicKey = AsymmetricEncryption.ExtractPublicKeyAndReturnAsXmlString(publicAndPrivateKey);
-            //AsymmetricEncryptionAndDecryptionTest();
-            //SymmetricEncryptionAndDecryptionTest();
-        }
-
-
-        private void AsymmetricEncryptionAndDecryptionTest()
-        {
-            // Encryption test:
-            String ciphertext = AsymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String("THIS is AN encryption TEST!", justThePublicKey);
-            // Decryption test:
-            String plaintext = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(ciphertext, publicAndPrivateKey);
-            // Place a breakpoint on the below line to inspect the values of the above two variables:
-            return;
-        }
-
-
-        private void SymmetricEncryptionAndDecryptionTest()
-        {
-            // Encryption test:
-            String ciphertext = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String("THIS is AN encryption TEST!", enteredPassword);
-            // Decryption test:
-            String plaintext = SymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(ciphertext, enteredPassword);
-            // Place a breakpoint on the below line to inspect the values of the above two variables:
-            return;
+            // Version 2.0: the cloud should respond and confirm that the account has indeed been created:
+            Object serverResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsObject(createNewUserAccountRequestObject);
         }
 
 
         private class CreateNewUserAccountRequestObject
         {
-            public CreateNewUserAccountRequestObject()
-            {
+            // In order for an instance of this class to be properly serialized/deserialized to/from JSON, ALL fields must:
+            // 1. Be public.
+            // 2. Contain BOTH a getter AND a setter.
+            public String TaskRequested { get; set; }
+            public String Account_Username { get; set; }
+            public String Account_Password_Hashcode { get; set; }
+            public String Public_Key { get; set; }
+            public String Private_Key { get; set; }
 
+
+            public CreateNewUserAccountRequestObject(String enteredUsername, String enteredPassword)
+            {
+                this.TaskRequested = "CREATE_NEW_USER_ACCOUNT";
+                this.Account_Username = enteredUsername;
+                this.Account_Password_Hashcode = Hashing.ConvertPasswordStringIntoSha256HashCodeBase64String(enteredPassword);
+                String publicAndPrivateKey = AsymmetricEncryption.CreateNewPublicAndPrivateKeyAndReturnAsXmlString();
+                this.Private_Key = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String(publicAndPrivateKey, enteredPassword);
+                this.Public_Key = AsymmetricEncryption.ExtractPublicKeyAndReturnAsXmlString(publicAndPrivateKey);
             }
         }
     }
