@@ -68,6 +68,17 @@ namespace Capstone_Group_Project.Services
             String plaintextString = Encoding.ASCII.GetString(plaintextByteArray);
             return plaintextString;
         }
+
+
+        private static void AsymmetricEncryptionAndDecryptionTest(String justThePublicKey, String publicAndPrivateKey)
+        {
+            // Encryption test:
+            String ciphertext = AsymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String("THIS is AN encryption TEST!", justThePublicKey);
+            // Decryption test:
+            String plaintext = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(ciphertext, publicAndPrivateKey);
+            // Place a breakpoint on the below line to inspect the values of the above two variables:
+            return;
+        }
     }
 
 
@@ -87,7 +98,7 @@ namespace Capstone_Group_Project.Services
             Aes aes = Aes.Create();
             // AES uses a 128 bit encryption key by default,
             // so it's convenient to just convert the symmetricPrivateKeyString to its unique 128 bit hash first:
-            aes.Key = ConvertPrivateKeyStringInto128BitHashByteArray(symmetricPrivateKeyString);
+            aes.Key = Hashing.ConvertPrivateKeyStringIntoMd5HashCodeByteArray(symmetricPrivateKeyString);
             aes.IV = IV;
             ICryptoTransform encryptor = aes.CreateEncryptor();
             // For the best security practices, we immediately zero out all of the data in the AES instance, and then destroy it:
@@ -103,20 +114,11 @@ namespace Capstone_Group_Project.Services
         }
 
 
-        private static byte[] ConvertPrivateKeyStringInto128BitHashByteArray(String symmetricPrivateKeyString)
-        {
-            byte[] symmetricPrivateKeyByteArray = Encoding.ASCII.GetBytes(symmetricPrivateKeyString);
-            MD5 md5 = MD5.Create();
-            byte[] symmetricPrivateKeyHashByteArray = md5.ComputeHash(symmetricPrivateKeyByteArray);
-            return symmetricPrivateKeyHashByteArray;
-        }
-
-
         public static String DecryptCiphertextBase64StringToPlaintextString(String ciphertextBase64String, String symmetricPrivateKeyString)
         {
             Aes aes = Aes.Create();
             // AES uses a 128 bit encryption key by default, so it's convenient to just convert the symmetricPrivateKeyString to a 128 bit hash first:
-            aes.Key = ConvertPrivateKeyStringInto128BitHashByteArray(symmetricPrivateKeyString);
+            aes.Key = Hashing.ConvertPrivateKeyStringIntoMd5HashCodeByteArray(symmetricPrivateKeyString);
             aes.IV = IV;
             ICryptoTransform decryptor = aes.CreateDecryptor();
             // For the best security practices, we immediately zero out all of the data in the AES instance, and then destroy it:
@@ -129,6 +131,45 @@ namespace Capstone_Group_Project.Services
             decryptor.Dispose();
             String plaintextString = Encoding.ASCII.GetString(plaintextByteArray);
             return plaintextString;
+        }
+
+
+        private static void SymmetricEncryptionAndDecryptionTest(String enteredPassword)
+        {
+            // Encryption test:
+            String ciphertext = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String("THIS is AN encryption TEST!", enteredPassword);
+            // Decryption test:
+            String plaintext = SymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(ciphertext, enteredPassword);
+            // Place a breakpoint on the below line to inspect the values of the above two variables:
+            return;
+        }
+    }
+
+
+    public static class Hashing
+    {
+        public static String ConvertPasswordStringIntoSha256HashCodeBase64String(String passwordString)
+        {
+            byte[] passwordByteArray = Encoding.ASCII.GetBytes(passwordString);
+            SHA256 sha256 = SHA256.Create();
+            byte[] passwordHashByteArray = sha256.ComputeHash(passwordByteArray);
+            // For the best security practices, we immediately zero out all of the data in the SHA256 instance, and then destroy it:
+            sha256.Clear();
+            sha256.Dispose();
+            String passwordHashBase64String = Convert.ToBase64String(passwordHashByteArray);
+            return passwordHashBase64String;
+        }
+
+
+        public static byte[] ConvertPrivateKeyStringIntoMd5HashCodeByteArray(String symmetricPrivateKeyString)
+        {
+            byte[] symmetricPrivateKeyByteArray = Encoding.ASCII.GetBytes(symmetricPrivateKeyString);
+            MD5 md5 = MD5.Create();
+            byte[] symmetricPrivateKeyHashByteArray = md5.ComputeHash(symmetricPrivateKeyByteArray);
+            // For the best security practices, we immediately zero out all of the data in the MD5 instance, and then destroy it:
+            md5.Clear();
+            md5.Dispose();
+            return symmetricPrivateKeyHashByteArray;
         }
     }
 }
