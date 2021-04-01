@@ -24,4 +24,11 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ProgramBehavior\ConversationSystem\ConversationCreationSystem\" />
+    <Folder Include="ProgramBehavior\ConversationSystem\ConversationInvitationSystem\" />
+    <Folder Include="ProgramBehavior\ConversationSystem\ConversationSendingMessageSystem\" />
+    <Folder Include="ProgramBehavior\ConversationSystem\ConversationReceivingMessageSystem\" />
+  </ItemGroup>
 </Project>

@@ -27,7 +27,7 @@
             <!-- Opposite of what we do for a text entry, when we set Mode=OneWay for the binding,
             it means that data (and automatic updates) only goes in one direction, FROM the ViewModel TO the UI element,
             which is what we want for the label below that displays any possible success or error messages. -->
-            <Label Text="{Binding DisplayedSuccessOrErrorMessage, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>
+            <Label Text="{Binding DisplayedStatusMessage, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>
 
         </StackLayout>
         
