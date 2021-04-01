@@ -14,7 +14,8 @@ namespace Capstone_Group_Project
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+            //choose which startup page
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()
