@@ -17,6 +17,8 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLo
 
         public static async Task<bool> AttemptToLogUserIn(String enteredUsername, String enteredPassword)
         {
+            // For the time being, while the cloud is not set up we will return true so we can log in:
+            return true;
             LogUserIntoAccountRequestObject logUserIntoAccountRequestObject = new LogUserIntoAccountRequestObject(enteredUsername, enteredPassword);
             bool wasLoginAttemptSuccessful = await SendRequestToLogUserInToCloud(logUserIntoAccountRequestObject);
             if (wasLoginAttemptSuccessful)
@@ -27,9 +29,6 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLo
 
         private static async Task<bool> SendRequestToLogUserInToCloud(LogUserIntoAccountRequestObject logUserIntoAccountRequestObject)
         {
-            // For the time being, while the cloud is not set up we will return true so we can log in:
-            return true;
-
             Object cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsObject(logUserIntoAccountRequestObject);
             // We expect the cloud to return the exact same LogUserIntoAccountRequestObject that we originally sent:
             if (cloudResponseObject is LogUserIntoAccountResponseObject)
