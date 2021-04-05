@@ -1,7 +1,5 @@
 ﻿using Capstone_Group_Project.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Capstone_Group_Project.Models
 {
@@ -56,7 +54,7 @@ namespace Capstone_Group_Project.Models
 
         public LogUserIntoAccountRequestObject(String enteredUsername, String enteredPassword)
         {
-            TaskRequested = "LOG_INTO_ACCOUNT";
+            this.TaskRequested = "LOG_INTO_ACCOUNT";
             this.Account_Username = enteredUsername;
             this.Account_Password_Hashcode = Hashing.ConvertPasswordStringIntoSha256HashCodeBase64String(enteredPassword);
         }
@@ -77,5 +75,21 @@ namespace Capstone_Group_Project.Models
     {
         public int Conversation_ID { get; set; } = 0;
         public String Account_Username_Of_Sender { get; set; } = null;
+    }
+
+
+    public class CreateNewConversationRequestObject : CloudCommunicationObject
+    {
+        public int Account_ID { get; set; } = 0;
+        public String Conversation_Private_Key { get; set; } = null;
+        public int Conversation_ID { get; set; } = 0;
+
+
+        public CreateNewConversationRequestObject(int accountID, String conversationPrivateKey)
+        {
+            this.TaskRequested = "CREATE_NEW_CONVERSATION";
+            this.Account_ID = accountID;
+            this.Conversation_Private_Key = conversationPrivateKey;
+        }
     }
 }

@@ -6,12 +6,12 @@ using Xamarin.Forms.Xaml;
 namespace Capstone_Group_Project.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RegisterPage : ContentPage
+    public partial class CreateNewConversationPage : ContentPage
     {
-        public RegisterPage()
+        public CreateNewConversationPage()
         {
             InitializeComponent();
-            this.BindingContext = new RegisterViewModel();
+            this.BindingContext = new CreateNewConversationViewModel();
         }
     }
 }
