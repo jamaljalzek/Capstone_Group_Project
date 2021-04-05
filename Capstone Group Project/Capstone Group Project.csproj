@@ -12,13 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\CreateNewConversationPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ListOfConversationsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\RegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProgramBehavior\ConversationSystem\ConversationCreationSystem\" />
     <Folder Include="ProgramBehavior\ConversationSystem\ConversationInvitationSystem\" />
     <Folder Include="ProgramBehavior\ConversationSystem\ConversationSendingMessageSystem\" />
     <Folder Include="ProgramBehavior\ConversationSystem\ConversationReceivingMessageSystem\" />

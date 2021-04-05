@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Capstone_Group_Project.Models
+﻿namespace Capstone_Group_Project.Models
 {
     public class Item
     {

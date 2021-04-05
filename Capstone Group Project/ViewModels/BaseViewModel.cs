@@ -50,5 +50,12 @@ namespace Capstone_Group_Project.ViewModels
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+
+        public void UpdateUserInterfaceElementBoundToGivenVariable(String nameOfVariable)
+        {
+            // I'm wrapping this method with a more descriptive name for clarity:
+            OnPropertyChanged(nameOfVariable);
+        }
     }
 }

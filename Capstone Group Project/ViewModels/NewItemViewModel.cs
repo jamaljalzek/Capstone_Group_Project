@@ -1,8 +1,5 @@
 ﻿using Capstone_Group_Project.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Capstone_Group_Project.ViewModels

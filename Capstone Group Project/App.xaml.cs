@@ -1,8 +1,5 @@
 ﻿using Capstone_Group_Project.Services;
-using Capstone_Group_Project.Views;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Capstone_Group_Project
 {

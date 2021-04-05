@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -89,15 +87,16 @@ namespace Capstone_Group_Project.Services
         // 1. Encrypt/decrypt a user account's private ASYMMETRIC key (from the class above) with the user's plaintext password.
         // 2. Encrypt/decrypt all messages in a given conversation with that conversation's private SYMMETRIC key (from this class).
 
-        // This IV needs to eventually be hard coded in so that it's the exact same for all instances of this mobile application:
+        // This IV will eventually be hard coded in so that it's the exact same across all instances of this mobile application:
         private static byte[] IV = Aes.Create().IV;
+        // Technically it is more secure to store the IV along with the symmetric private key itself, but at least for Version 1.0 we will omit this step.
 
 
         public static String EncryptPlaintextStringToCiphertextBase64String(String plaintextString, String symmetricPrivateKeyString)
         {
             Aes aes = Aes.Create();
             // AES uses a 128 bit encryption key by default,
-            // so it's convenient to just convert the symmetricPrivateKeyString to its unique 128 bit hash first:
+            // so it's convenient to just convert the symmetricPrivateKeyString to its unique 128 bit hash code first:
             aes.Key = Hashing.ConvertPrivateKeyStringIntoMd5HashCodeByteArray(symmetricPrivateKeyString);
             aes.IV = IV;
             ICryptoTransform encryptor = aes.CreateEncryptor();
@@ -131,6 +130,18 @@ namespace Capstone_Group_Project.Services
             decryptor.Dispose();
             String plaintextString = Encoding.ASCII.GetString(plaintextByteArray);
             return plaintextString;
+        }
+
+
+        public static String GenerateNewRandomAesKeyAndReturnAsBase64String()
+        {
+            // AES uses a 128 bit encryption key by default, so we will return a 16 byte, or 16 character String as the new key:
+            Aes aes = Aes.Create();
+            String newAesKeyAsBase64String = Convert.ToBase64String(aes.Key);
+            // For the best security practices, we immediately zero out all of the data in the AES instance, and then destroy it:
+            aes.Clear();
+            aes.Dispose();
+            return newAesKeyAsBase64String;
         }
 
 

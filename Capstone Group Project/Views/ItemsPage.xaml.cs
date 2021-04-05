@@ -1,14 +1,5 @@
-﻿using Capstone_Group_Project.Models;
-using Capstone_Group_Project.ViewModels;
-using Capstone_Group_Project.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Capstone_Group_Project.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Capstone_Group_Project.Views
 {

@@ -1,8 +1,6 @@
 ﻿using Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLoginSystem;
 using Capstone_Group_Project.Views;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Capstone_Group_Project.ViewModels
@@ -37,13 +35,6 @@ namespace Capstone_Group_Project.ViewModels
                 DisplayedStatusMessage = UserAccountLoginHandler.errorMessage;
                 UpdateUserInterfaceElementBoundToGivenVariable("DisplayedStatusMessage");
             }
-        }
-
-
-        private void UpdateUserInterfaceElementBoundToGivenVariable(String nameOfVariable)
-        {
-            // I'm wrapping this method with a more descriptive name for clarity.
-            OnPropertyChanged(nameOfVariable);
         }
 
 
