@@ -11,10 +11,11 @@
 
 
     <ContentPage.Content>
-
+        
+        
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
             <Image Source="{local:ImageResource Capstone_Group_Project.Images.mail_logo_messenger.png}"/>
-
+            
             <Label Text="Username" FontSize="Medium" HorizontalOptions="Center"/>
 
             <Entry Text="{Binding EnteredUsername, Mode=OneWayToSource}" FontSize="Medium"/>
