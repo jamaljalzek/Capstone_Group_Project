@@ -1,14 +1,12 @@
-﻿using Capstone_Group_Project.Services;
+﻿using Capstone_Group_Project.Models;
+using Capstone_Group_Project.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Account_Creation_System
 {
     class UserAccountDetailsValidator
     {
-        private static UserAccountDetailsValidator currentInstance;
         public static String errorMessage;
 
         private String enteredUsername;
@@ -18,14 +16,13 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
 
         public static async Task<bool> AreEnteredUserAccountDetailsValid(String enteredUsername, String firstEnteredPassword, String secondEnteredPassword)
         {
-            currentInstance = new UserAccountDetailsValidator
+            UserAccountDetailsValidator currentInstance = new UserAccountDetailsValidator
             {
                 enteredUsername = enteredUsername,
                 firstEnteredPassword = firstEnteredPassword,
                 secondEnteredPassword = secondEnteredPassword,
             };
             bool areEnteredUserAccountDetailsValid = await currentInstance.AreEnteredUsernameAndPasswordValid();
-            currentInstance = null;
             return areEnteredUserAccountDetailsValid;
         }
 
@@ -49,7 +46,7 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
             if (!DoesEnteredUsernameMeetLengthRequirements() || !DoesEnteredUsernameOnlyContainValidCharacters())
                 return false;
             // The below needs testing:
-            bool isEnteredUsernameAlreadyInUserByAnotherUserAccount = false; // await IsEnteredUsernameAlreadyInUseByAnotherUserAccount();
+            bool isEnteredUsernameAlreadyInUserByAnotherUserAccount = await IsEnteredUsernameAlreadyInUseByAnotherUserAccount();
             return !isEnteredUsernameAlreadyInUserByAnotherUserAccount;
         }
 
@@ -84,10 +81,10 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
 
         private async Task<bool> IsEnteredUsernameAlreadyInUseByAnotherUserAccount()
         {
-            Object serverResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsObject(new IsUsernameAlreadyInUseRequestObject(enteredUsername));
             // We expect the cloud to return the exact same IsUsernameAlreadyInUseRequestObject that we originally sent:
-            IsUsernameAlreadyInUseRequestObject serverResponseResult = (IsUsernameAlreadyInUseRequestObject)serverResponseObject;
-            if (serverResponseResult.IsAccountUsernameAlreadyInUse)
+            IsUsernameAlreadyInUseRequestObject usernameLookupRequestCloudObject = new IsUsernameAlreadyInUseRequestObject(enteredUsername);
+            IsUsernameAlreadyInUseRequestObject usernameLookupResponseFromCloudObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<IsUsernameAlreadyInUseRequestObject>(usernameLookupRequestCloudObject);
+            if (usernameLookupResponseFromCloudObject.ResultOfRequest.Equals("YES"))
             {
                 errorMessage = "ERROR, the entered username is already in use by another user account!";
                 return true;
@@ -104,7 +101,6 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
 
         private bool DoesEnteredPasswordMeetLengthRequirements()
         {
-            // We may want passwords to be a minimum of 16 letters long so that they convert nicely to a 128 bit MD5 hash:
             if (firstEnteredPassword.Length < 10 || firstEnteredPassword.Length > 100)
             {
                 errorMessage = "ERROR, the entered passsword is not between 10 and 100 characters long!";
@@ -155,25 +151,6 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
                 return false;
             }
             return true;
-        }
-
-
-        private class IsUsernameAlreadyInUseRequestObject
-        {
-            // In order for an instance of this class to be properly serialized/deserialized to/from JSON, ALL fields must:
-            // 1. Be public.
-            // 2. Contain BOTH a getter AND a setter.
-            public String TaskRequested { get; set; }
-            public String Account_Username { get; set; }
-            public bool IsAccountUsernameAlreadyInUse { get; set; }
-
-
-            public IsUsernameAlreadyInUseRequestObject(String enteredUsername)
-            {
-                this.TaskRequested = "CHECK_IF_ACCOUNT_USERNAME_IS_IN_USE";
-                this.Account_Username = enteredUsername;
-                this.IsAccountUsernameAlreadyInUse = false;
-            }
         }
     }
 }

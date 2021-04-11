@@ -1,7 +1,5 @@
-﻿using Capstone_Group_Project.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Capstone_Group_Project.ViewModels

@@ -1,9 +1,4 @@
 ﻿using Capstone_Group_Project.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,8 +12,10 @@ namespace Capstone_Group_Project.Views
             InitializeComponent();
             this.BindingContext = new LoginViewModel();
         }
-        // MVVM 
 
-        // Models/Program logic, Views, ViewModels
+        // Xamarin Forms uses the MVVM architecture:
+        // Models/Program logic: the classes that contain data and do the actual work
+        // Views: the XAML pages which handle how the GUI looks
+        // ViewModels: an extension of the code-behind of each XAML page, which connects the Views to the Models/Program logic
     }
 }

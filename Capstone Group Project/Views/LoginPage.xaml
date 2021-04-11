@@ -34,6 +34,8 @@
             <!-- It's the same logic above for the next button below. -->
             <Button Text="Register" Command="{Binding NavigateToRegisterPageCommand}" HorizontalOptions="Center"/>
 
+            <Label Text="{Binding DisplayedStatusMessage, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>
+
         </StackLayout>
         
     </ContentPage.Content>
