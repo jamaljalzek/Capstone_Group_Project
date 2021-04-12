@@ -20,7 +20,7 @@ namespace Capstone_Group_Project.Views
         {
             // This method only gets called once the initial set of messages are loaded into the MessagesView.
             // This method then scrolls the MessagesView down all the way to the very last message, at the index specificed below:
-            int bottomViewIndexOfMostRecentMessage = IndividualConversationViewModel.NUMBER_OF_MESSAGES_TO_LOAD_AT_A_TIME - 1;
+            int bottomViewIndexOfMostRecentMessage = IndividualConversationViewModel.NUMBER_OF_MESSAGES_TO_LOAD_AT_A_TIME;
             MessagesView.ScrollTo(bottomViewIndexOfMostRecentMessage);
             // Thankfully, whenever we add new messages to the MessagesView, like when we load more messages from further back in time,
             // this method does not activate again, meaning it won't scroll down to the latest message when the user was trying to scroll up
