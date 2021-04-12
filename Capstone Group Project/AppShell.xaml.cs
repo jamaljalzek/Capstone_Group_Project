@@ -14,6 +14,7 @@ namespace Capstone_Group_Project
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(ListOfConversationsPage), typeof(ListOfConversationsPage));
             Routing.RegisterRoute(nameof(CreateNewConversationPage), typeof(CreateNewConversationPage));
+            Routing.RegisterRoute(nameof(IndividualConversationPage), typeof(IndividualConversationPage));
             this.CurrentItem = new LoginPage();
         }
 

@@ -12,7 +12,7 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLo
 
         public static async Task<bool> AttemptToLogUserIn(String enteredUsername, String enteredPassword)
         {
-            // For the time being, while the cloud is not set up we will return true so we can log in:
+            // For the time being, while the cloud is not set up we return true so we can log in:
             return true;
 
             bool wasLoginAttemptSuccessful = await AttemptToLoadUserAccountDetailsFromTheCloud(enteredUsername, enteredPassword);

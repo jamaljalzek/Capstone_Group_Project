@@ -12,13 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\CreateNewConversationPage.xaml">
+    <EmbeddedResource Update="Views\ConversationViews\CreateNewConversationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ListOfConversationsPage.xaml">
+    <EmbeddedResource Update="Views\ConversationViews\IndividualConversationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RegisterPage.xaml">
+    <EmbeddedResource Update="Views\ConversationViews\ListOfConversationsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\UserAccountViews\RegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
