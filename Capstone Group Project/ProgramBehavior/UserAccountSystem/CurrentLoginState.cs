@@ -15,6 +15,16 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem
         public ConversationInvitation[] ConversationInvitations { get; set; } = null;
 
 
+        // For the time being, while the cloud is not functional we will just set up a dummy login state for testing purposes:
+        static CurrentLoginState()
+        {
+            currentLoginState = new CurrentLoginState()
+            {
+                IdsOfConversationsUserIsParticipantIn = new int[] { 111, 222, 333, 444, 555, 666, 777 }
+            };
+        }
+
+
         public static void LoadNewLoginState(LogUserIntoAccountResponseObject loginAttemptResponseFromCloudObject, String enteredPassword)
         {
             currentLoginState = new CurrentLoginState();
@@ -35,6 +45,18 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem
         public static String GetCurrentUserPublicKey()
         {
             return currentLoginState.Public_Key;
+        }
+
+
+        public static int[] GetIdsOfConversationsCurrentUserIsParticipantIn()
+        {
+            return currentLoginState.IdsOfConversationsUserIsParticipantIn;
+        }
+
+
+        public static String GetCurrentUserPrivateKey()
+        {
+            return currentLoginState.Private_Key;
         }
     }
 }

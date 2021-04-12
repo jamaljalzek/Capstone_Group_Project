@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Capstone_Group_Project.ViewModels"
+             xmlns:model="clr-namespace:Capstone_Group_Project.Models"
+             x:Class="Capstone_Group_Project.Views.ListOfConversationsPage"
+             Title="Conversations">
+
+    <ContentPage.ToolbarItems>
+        
+        <ToolbarItem Text="New" Command="{Binding CreateConversationCommand}" />
+        
+    </ContentPage.ToolbarItems>
+    
+    
+    <ContentPage.Content>
+
+        <CollectionView x:Name="ConversationListingsView" ItemsSource="{Binding ConversationListings}" SelectionMode="None">
+            
+            <!-- Here, we can define how each conversation listing will look like. -->
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="model:ConversationListing">
+
+                    <StackLayout Padding="10">
+                        
+                        <Label Text="{Binding ConversationId}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" />
+                        
+                        <Label Text="{Binding UnreadMessagesIndicator}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Small" />
+
+                        <StackLayout.GestureRecognizers>
+
+                            <!-- The binding we have set up for the Command looks convoluted, but it allows us to call the Command in the ListOfConversationsViewModel, rather than the ConversationListing model that is used above. -->
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding Source={RelativeSource AncestorType={x:Type local:ListOfConversationsViewModel}}, Path=ConversationListingTapped}" CommandParameter="{Binding .}"/>
+
+                        </StackLayout.GestureRecognizers>
+                        
+                    </StackLayout>
+                    
+                </DataTemplate>
+                
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
+
+    </ContentPage.Content>
+    
+</ContentPage>

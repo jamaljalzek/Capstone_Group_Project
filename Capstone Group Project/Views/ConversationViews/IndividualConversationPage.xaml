@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Capstone_Group_Project.Views.IndividualConversationPage"
+             xmlns:model="clr-namespace:Capstone_Group_Project.Models"
+             Title="{Binding CurrentConverstionIdNumber, Mode=OneWay}">
+
+    <ContentPage.Content>
+
+        <StackLayout>
+
+            <CollectionView x:Name="MessagesView" ItemsSource="{Binding LoadedMessages}" SelectionMode="None" SizeChanged="MessagesView_SizeChanged">
+
+                <CollectionView.Header>
+
+                    <Button Text="Load more messages..." Command="{Binding LoadMoreMessagesCommand}" HorizontalOptions="Center"/>
+
+                </CollectionView.Header>
+
+                <!-- Here, we can define how each conversation listing will look like. -->
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="model:Message">
+
+                        <StackLayout Padding="10">
+
+                            <StackLayout Orientation="Horizontal">
+
+                                <Label Text="{Binding MessageSenderUsername}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" HorizontalOptions="Start" Padding="0,0,10,0"/>
+
+                                <Label Text="{Binding TimeAndDateMessageWasSent}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Small" HorizontalOptions="Start" />
+                                
+                            </StackLayout>
+
+                            <Label Text="{Binding MessageBody}" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Medium" />
+
+                        </StackLayout>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <Grid Margin="10,0,10,0">
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="auto" />
+
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+
+                    <ColumnDefinition Width="auto" />
+                    
+                    <ColumnDefinition />
+
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Text="->" Command="{Binding SendMessageCommand}" VerticalOptions="Start" HeightRequest="50" WidthRequest="50" />
+
+                <Editor Grid.Column="1" Text="{Binding EnteredMessage, Mode=OneWayToSource}" AutoSize="TextChanges" FontSize="Medium" MaxLength="200" Keyboard="Chat" IsSpellCheckEnabled="True"/>
+
+            </Grid>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+    
+</ContentPage>

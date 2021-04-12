@@ -52,7 +52,7 @@ namespace Capstone_Group_Project.Services
         }
 
 
-        private static void DeserializationDemo()
+        public static void DeserializationDemo()
         {
             Item item = JsonConvert.DeserializeObject<Item>("{ 'Id' : 'blah', 'Text' : 'blahblah', 'Description' : 'blahblahblah' }");
             String result = item.Id + " " + item.Text + " " + item.Description;
@@ -61,7 +61,7 @@ namespace Capstone_Group_Project.Services
         }
 
 
-        private static void DeserializationTest1()
+        public static void DeserializationTest1()
         {
             // We can see that the 'Hello' field is ommitted:
             CurrentLoginState myLoginState = JsonConvert.DeserializeObject<CurrentLoginState>("{ 'Hello' : 3, 'Account_ID' : 1234, 'Public_Key' : 'MYPUBLICKEY', 'Private_Key' : 'MYPRIVATEKEY', 'IdsOfConversationsUserIsParticipantIn' : [111, 222, 333], 'ConversationInvitations' : [ { 'Conversation_ID' : 777, 'Account_Username_Of_Sender' : 'Jamal' } ] }");
@@ -75,12 +75,25 @@ namespace Capstone_Group_Project.Services
         }
 
 
-        private static void DeserializationTest2()
+        public static void DeserializationTest2()
         {
             // The below line crashes, since the input JSON String was clearly never a String Object in the first place.
             String result = JsonConvert.DeserializeObject<String>("{ 'Account_ID' : 1234, 'Public_Key' : 'MYPUBLICKEY', 'Private_Key' : 'MYPRIVATEKEY', 'IdsOfConversationsUserIsParticipantIn' : [111, 222, 333], 'ConversationInvitations' : [ { 'Conversation_ID' : 777, 'Account_Username_Of_Sender' : 'Jamal' } ] }");
             // Place a breakpoint on the below line to inspect the values of the above variable:
             return;
+        }
+
+
+        public static void DeserializationTest3()
+        {
+            // The JSON clearly contains an instance of the LogUserIntoAccountResponseObject, so what happens when we use its parent CloudCommunicationObject as the target to deserialize to first?
+            CloudCommunicationObject cloudObject = JsonConvert.DeserializeObject<CloudCommunicationObject>("{ 'Hello' : 3, 'Account_ID' : 1234, 'Public_Key' : 'MYPUBLICKEY', 'Private_Key' : 'MYPRIVATEKEY', 'IdsOfConversationsUserIsParticipantIn' : [111, 222, 333], 'ConversationInvitations' : [ { 'Conversation_ID' : 777, 'Account_Username_Of_Sender' : 'Jamal' } ] }");
+            // Next, we try to convert to the LogUserIntoAccountResponseObject object:
+            LogUserIntoAccountResponseObject logUserIntoAccountResponseObject = cloudObject as LogUserIntoAccountResponseObject;
+            logUserIntoAccountResponseObject.Account_ID = 0;
+            // Place a breakpoint on the below line to inspect the values of the above variables:
+            return;
+            // We see that the above test fails, since the logUserIntoAccountResponseObject ends up null, even though we casted a non-null CloudCommunicationObject to it.
         }
     }
 }
