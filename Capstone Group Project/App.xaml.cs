@@ -1,4 +1,5 @@
 ﻿using Capstone_Group_Project.Services;
+using Capstone_Group_Project.Views;
 using Xamarin.Forms;
 
 namespace Capstone_Group_Project
@@ -11,7 +12,8 @@ namespace Capstone_Group_Project
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+            //choose which startup page
+            MainPage = new LoginPage();
         }
 
         protected override void OnStart()

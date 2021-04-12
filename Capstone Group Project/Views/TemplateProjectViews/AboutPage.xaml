@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Capstone_Group_Project.Views.AboutPage"
              xmlns:vm="clr-namespace:Capstone_Group_Project.ViewModels"
+             xmlns:local="clr-namespace:Capstone_Group_Project"
              Title="{Binding Title}">
+            <!-- xmlns:local is used for adding embedded images-->
     
     <ContentPage.BindingContext>
         <vm:AboutViewModel />
@@ -29,7 +31,8 @@
         </StackLayout>
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
-                <Label Text="Start developing now" FontSize="Title"/>
+                <Image Source="{local:ImageResource Capstone_Group_Project.Images.mail_logo_messenger.png}"/>
+                <Label Text="A change made by luke" FontSize="Title"/>
                 <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="0,0,0,0"/>
                 <Label FontSize="16" Padding="0,24,0,0">
                     <Label.FormattedText>
