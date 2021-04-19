@@ -1,5 +1,6 @@
 ﻿using Capstone_Group_Project.Models;
 using Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndividualConversationSystem;
+using Capstone_Group_Project.Views;
 using System;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
@@ -9,11 +10,13 @@ namespace Capstone_Group_Project.ViewModels
     class IndividualConversationViewModel : BaseViewModel
     {
         public int CurrentConverstionIdNumber { get; set; } = 0;
-        public String EnteredMessage { get; set; } = null;
+        public String EnteredMessage { get; set; } = "";
         public Command SendMessageCommand { get; set; } = null;
         public Command LoadMoreMessagesCommand { get; set; } = null;
         public ObservableCollection<Message> LoadedMessages { get; set; } = null;
+
         private int LoadedMessagesEndingMessageNumberInclusive = 0;
+
         public const int NUMBER_OF_MESSAGES_TO_LOAD_AT_A_TIME = 25;
 
 
@@ -29,13 +32,27 @@ namespace Capstone_Group_Project.ViewModels
 
         private async void SendEnteredMessageToAllConversationParticipants()
         {
+            if (EnteredMessage.Length == 0)
+                return;
+            DateTime currentDateAndTime = DateTime.Now;
+            //SendConversationMessageHandler.SendIndividualMessageToAllConversationParticipants(EnteredMessage, currentDateAndTime);
+            DisplaySentMessageOnOurEnd(currentDateAndTime);
+            EnteredMessage = "";
+            UpdateUserInterfaceElementBoundToGivenVariable(EnteredMessage);
+        }
+
+
+        private void DisplaySentMessageOnOurEnd(DateTime currentDateAndTime)
+        {
             Message newMessage = new Message()
             {
-                MessageSenderUsername = "Jamal",
-                TimeAndDateMessageWasSent = "4/9/2021",
-                MessageBody = "TEST MESSAGE #" + 999 + " FOR CONVERSATION #" + CurrentConverstionIdNumber + "blah blah blah blah blah blah blah blah"
+                MessageSenderUsername = "Me",
+                TimeAndDateMessageWasSent = currentDateAndTime.ToString(),
+                MessageBody = EnteredMessage
             };
             LoadedMessages.Add(newMessage);
+            // Scroll to the bottom of the conversation so the latest message appears on screen:
+            IndividualConversationPage.ScrollToSpecifiedMessageNumberInMessagesView(LoadedMessages.Count);
         }
 
 

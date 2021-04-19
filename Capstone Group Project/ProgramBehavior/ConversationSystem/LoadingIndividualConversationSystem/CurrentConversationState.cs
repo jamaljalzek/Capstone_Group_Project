@@ -8,8 +8,21 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
 {
     public class CurrentConversationState
     {
+        private static int ConversationId = 0;
         private static Message[] RecentlyLoadedMessages = null;
         private static String ConversationPrivateKey = null;
+
+
+        public static int GetCurrentConversationID()
+        {
+            return ConversationId;
+        }
+
+
+        public static String GetCurrentConversationPrivateKey()
+        {
+            return ConversationPrivateKey;
+        }
 
 
         public static async Task<Message[]> LoadInitialMessagesForGivenConversation(int conversationId, int numberOfMessagesToLoad)

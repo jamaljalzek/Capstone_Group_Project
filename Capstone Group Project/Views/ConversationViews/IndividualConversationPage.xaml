@@ -60,7 +60,7 @@
 
                 <Button Grid.Column="0" Text="->" Command="{Binding SendMessageCommand}" VerticalOptions="Start" HeightRequest="50" WidthRequest="50" />
 
-                <Editor Grid.Column="1" Text="{Binding EnteredMessage, Mode=OneWayToSource}" AutoSize="TextChanges" FontSize="Medium" MaxLength="200" Keyboard="Chat" IsSpellCheckEnabled="True"/>
+                <Editor Grid.Column="1" Text="{Binding EnteredMessage, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" MaxLength="200" Keyboard="Chat" IsSpellCheckEnabled="True"/>
 
             </Grid>
 

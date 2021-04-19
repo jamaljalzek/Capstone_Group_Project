@@ -38,5 +38,20 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLo
             CurrentLoginState.LoadNewLoginState(loginAttemptResponseFromCloudObject, enteredPassword);
             return true;
         }
+
+
+        private class LogUserIntoAccountRequestObject : CloudCommunicationObject
+        {
+            public String Account_Username { get; set; } = null;
+            public String Account_Password_Hashcode { get; set; } = null;
+
+
+            public LogUserIntoAccountRequestObject(String enteredUsername, String enteredPassword)
+            {
+                this.TaskRequested = "LOG_INTO_ACCOUNT";
+                this.Account_Username = enteredUsername;
+                this.Account_Password_Hashcode = Hashing.ConvertPasswordStringIntoSha256HashCodeBase64String(enteredPassword);
+            }
+        }
     }
 }
