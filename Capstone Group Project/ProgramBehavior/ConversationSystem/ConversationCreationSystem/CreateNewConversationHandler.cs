@@ -27,5 +27,21 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
                 return "New conversation created!\nConversation ID: " + createNewConversationRequestObject.Conversation_ID;
             return "ERROR, the new conversation was not successfully created!";
         }
+
+
+        private class CreateNewConversationRequestObject : CloudCommunicationObject
+        {
+            public int Account_ID { get; set; } = 0;
+            public String Conversation_Private_Key { get; set; } = null;
+            public int Conversation_ID { get; set; } = 0;
+
+
+            public CreateNewConversationRequestObject(int accountID, String conversationPrivateKey)
+            {
+                this.TaskRequested = "CREATE_NEW_CONVERSATION";
+                this.Account_ID = accountID;
+                this.Conversation_Private_Key = conversationPrivateKey;
+            }
+        }
     }
 }

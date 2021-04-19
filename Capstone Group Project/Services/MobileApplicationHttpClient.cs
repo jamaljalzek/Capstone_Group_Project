@@ -33,9 +33,9 @@ namespace Capstone_Group_Project.Services
 
         private static async Task<String> PostJsonStringAsynchronouslyAndReturnResultAsJsonString(String jsonStringToSend)
         {
+            StringContent content = new StringContent(jsonStringToSend, Encoding.UTF8, "application/json");
             try
             {
-                StringContent content = new StringContent(jsonStringToSend, Encoding.UTF8, "application/json");
                 HttpResponseMessage responseMessage = await httpClient.PostAsync(baseURL, content);
                 if (responseMessage.IsSuccessStatusCode)
                 {
@@ -49,6 +49,23 @@ namespace Capstone_Group_Project.Services
                 Console.WriteLine("Message :{0} ", exception.Message);
             }
             return null;
+        }
+
+
+        public static async void PostObjectAsynchronouslyWithoutWaitingForResponse(Object objectToConvertToJson)
+        {
+            String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
+            StringContent content = new StringContent(jsonStringRepresentation, Encoding.UTF8, "application/json");
+            try
+            {
+                // We may want to try checking the status code to confirm the HTTP post operation was successful:
+                await httpClient.PostAsync(baseURL, content);
+            }
+            catch (HttpRequestException exception)
+            {
+                Console.WriteLine("\nHttpRequestException Caught!");
+                Console.WriteLine("Message :{0} ", exception.Message);
+            }
         }
 
 

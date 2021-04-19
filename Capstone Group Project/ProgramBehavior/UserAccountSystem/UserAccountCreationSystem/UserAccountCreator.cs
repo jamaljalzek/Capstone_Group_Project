@@ -26,5 +26,25 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
             CreateNewUserAccountRequestObject loginAttemptResponseFromCloudObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<CreateNewUserAccountRequestObject>(createNewUserAccountRequestObject);
             return loginAttemptResponseFromCloudObject.ResultOfRequest.Equals("ACCOUNT_CREATED");
         }
+
+
+        private class CreateNewUserAccountRequestObject : CloudCommunicationObject
+        {
+            public String Account_Username { get; set; } = null;
+            public String Account_Password_Hashcode { get; set; } = null;
+            public String Public_Key { get; set; } = null;
+            public String Private_Key { get; set; } = null;
+
+
+            public CreateNewUserAccountRequestObject(String enteredUsername, String enteredPassword)
+            {
+                this.TaskRequested = "CREATE_NEW_ACCOUNT";
+                this.Account_Username = enteredUsername;
+                this.Account_Password_Hashcode = Hashing.ConvertPasswordStringIntoSha256HashCodeBase64String(enteredPassword);
+                String publicAndPrivateKey = AsymmetricEncryption.CreateNewPublicAndPrivateKeyAndReturnAsXmlString();
+                this.Private_Key = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String(publicAndPrivateKey, enteredPassword);
+                this.Public_Key = AsymmetricEncryption.ExtractPublicKeyAndReturnAsXmlString(publicAndPrivateKey);
+            }
+        }
     }
 }

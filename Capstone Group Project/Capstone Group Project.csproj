@@ -36,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="ProgramBehavior\ConversationSystem\ConversationInvitationSystem\" />
-    <Folder Include="ProgramBehavior\ConversationSystem\ConversationSendingMessageSystem\" />
     <Folder Include="ProgramBehavior\ConversationSystem\ConversationReceivingMessageSystem\" />
   </ItemGroup>
 </Project>

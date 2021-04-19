@@ -1,6 +1,5 @@
 ﻿using Capstone_Group_Project.ViewModels;
 using System;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,10 +8,20 @@ namespace Capstone_Group_Project.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class IndividualConversationPage : ContentPage
     {
+        private static IndividualConversationPage currentInstance = null;
+
+
         public IndividualConversationPage()
         {
             InitializeComponent();
             this.BindingContext = new IndividualConversationViewModel();
+            currentInstance = this;
+        }
+
+
+        public static void ScrollToSpecifiedMessageNumberInMessagesView(int messageNumber)
+        {
+            currentInstance.MessagesView.ScrollTo(messageNumber);
         }
 
 
@@ -28,6 +37,10 @@ namespace Capstone_Group_Project.Views
             // Trying to rely on the "ChildAdded" event does not work as we need it to: it will scroll down to the bottom message, however,
             // when we try to scroll up, it strangely automatically scrolls back down, despite no new elements being added.
             // Somehow, tapping events triggers it is my guess.
+            // Also, trying to call the above ScrollToSpecifiedMessageNumberInMessagesView() method after the initial set of messages has been loaded
+            // does not work either: the currentInstance field is null.
+            // That said, even if we do NOT navigate away from the same individual conversation page, when we send an individual message
+            // and call ScrollToSpecifiedMessageNumberInMessagesView(), the currentInstance is NOT null then... I have no idea why this is the case.
         }
     }
 }

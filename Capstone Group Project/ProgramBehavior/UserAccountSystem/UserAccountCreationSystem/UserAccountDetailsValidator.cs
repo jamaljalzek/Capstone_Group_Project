@@ -152,5 +152,18 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
             }
             return true;
         }
+
+
+        private class IsUsernameAlreadyInUseRequestObject : CloudCommunicationObject
+        {
+            public String Account_Username { get; set; } = null;
+
+
+            public IsUsernameAlreadyInUseRequestObject(String enteredUsername)
+            {
+                this.TaskRequested = "CHECK_IF_USERNAME_IS_IN_USE";
+                this.Account_Username = enteredUsername;
+            }
+        }
     }
 }
