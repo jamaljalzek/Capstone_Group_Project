@@ -5,6 +5,12 @@
              xmlns:model="clr-namespace:Capstone_Group_Project.Models"
              Title="{Binding CurrentConverstionIdNumber, Mode=OneWay}">
 
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Invite" Command="{Binding SendNewInviteCommand}" />
+
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
 
         <StackLayout>

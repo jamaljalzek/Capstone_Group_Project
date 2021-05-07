@@ -18,7 +18,25 @@ namespace Capstone_Group_Project.Services
         static MobileApplicationHttpClient()
         {
             httpClient = new HttpClient();
-            //httpClient.BaseAddress = new Uri(baseURL);
+            httpClient.BaseAddress = new Uri("http://capstone-dev.us-east-1.elasticbeanstalk.com/http_request/");
+        }
+
+
+        public static async Task<System.Net.HttpStatusCode> PostObjectAsynchronouslyAndReturnHttpResponseCode(Object objectToConvertToJson, String relativeUri)
+        {
+            String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
+            StringContent content = new StringContent(jsonStringRepresentation, Encoding.UTF8, "application/json");
+            try
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(relativeUri, content);
+                return responseMessage.StatusCode;
+            }
+            catch (HttpRequestException exception)
+            {
+                Console.WriteLine("\nHttpRequestException Caught!");
+                Console.WriteLine("Message :{0} ", exception.Message);
+            }
+            return System.Net.HttpStatusCode.NotFound;
         }
 
 

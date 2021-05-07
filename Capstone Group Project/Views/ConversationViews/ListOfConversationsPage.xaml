@@ -23,8 +23,8 @@
                 <DataTemplate x:DataType="model:ConversationListing">
 
                     <StackLayout Padding="10">
-                        
-                        <Label Text="{Binding ConversationId}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" />
+
+                        <Label Text="{Binding ConversationId, StringFormat='Conversation ID: {0}'}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" />
                         
                         <Label Text="{Binding UnreadMessagesIndicator}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Small" />
 

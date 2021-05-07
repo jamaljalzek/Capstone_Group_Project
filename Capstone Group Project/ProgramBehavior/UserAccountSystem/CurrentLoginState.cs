@@ -22,6 +22,15 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem
             {
                 IdsOfConversationsUserIsParticipantIn = new int[] { 111, 222, 333, 444, 555, 666, 777 }
             };
+            currentLoginState.ConversationInvitations = new ConversationInvitation[5];
+            for (int currentInvitationNumber = 0; currentInvitationNumber < 5; ++currentInvitationNumber)
+            {
+                currentLoginState.ConversationInvitations[currentInvitationNumber] = new ConversationInvitation()
+                {
+                    Conversation_ID = currentInvitationNumber * 1000,
+                    Account_Username_Of_Sender = "AccountUsername" + currentInvitationNumber
+                };
+            }
         }
 
 
@@ -57,6 +66,12 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem
         public static String GetCurrentUserPrivateKey()
         {
             return currentLoginState.Private_Key;
+        }
+
+
+        public static ConversationInvitation[] GetConversationInvitations()
+        {
+            return currentLoginState.ConversationInvitations;
         }
     }
 }

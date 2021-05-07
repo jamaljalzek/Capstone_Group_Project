@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Capstone_Group_Project.ViewModels"
+             xmlns:model="clr-namespace:Capstone_Group_Project.Models"
+             x:Class="Capstone_Group_Project.Views.ListOfInvitationsPage"
+             Title="Invitations">
+
+    <ContentPage.Content>
+
+        <CollectionView x:Name="InvitationListingsView" ItemsSource="{Binding ConversationInvitations}" SelectionMode="None">
+
+            <!-- Here, we can define how each conversation listing will look like. -->
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="model:ConversationInvitation">
+
+                    <StackLayout Padding="10">
+
+                        <Label Text="{Binding Account_Username_Of_Sender, StringFormat='New conversation invitation from: {0}'}" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Medium" />
+
+                        <Label Text="{Binding Conversation_ID, StringFormat='Conversation ID: {0}'}" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" />
+
+                        <StackLayout Orientation="Horizontal">
+
+                            <!-- The binding we have set up for the Command looks convoluted, but it allows us to call the Command in the ListOfConversationsViewModel, rather than the ConversationListing model that is used above. -->
+                            <Button Text="Accept" Command="{Binding Source={RelativeSource AncestorType={x:Type local:ListOfInvitationsViewModel}}, Path=AcceptInvitationCommand}" CommandParameter="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="LightGreen"/>
+
+                            <Button Text="Decline" Command="{Binding Source={RelativeSource AncestorType={x:Type local:ListOfInvitationsViewModel}}, Path=RejectInvitationCommand}" CommandParameter="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="LightCoral"/>
+
+                        </StackLayout>
+
+                    </StackLayout>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </ContentPage.Content>
+
+</ContentPage>

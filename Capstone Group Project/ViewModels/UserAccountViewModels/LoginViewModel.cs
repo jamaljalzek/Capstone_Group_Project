@@ -29,7 +29,11 @@ namespace Capstone_Group_Project.ViewModels
             UpdateUserInterfaceElementBoundToGivenVariable("DisplayedStatusMessage");
             bool wasUserSuccessfullyLoggedIn = await UserAccountLoginHandler.AttemptToLogUserIn(EnteredUsername, EnteredPassword);
             if (wasUserSuccessfullyLoggedIn)
-                NavigateToAboutPage();
+            {
+                // Enable the flyout menu:
+                Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
+                NavigateToConversationsPage();
+            }
             else
             {
                 DisplayedStatusMessage = UserAccountLoginHandler.errorMessage;
@@ -38,10 +42,10 @@ namespace Capstone_Group_Project.ViewModels
         }
 
 
-        private async void NavigateToAboutPage()
+        private async void NavigateToConversationsPage()
         {
             // Prefixing with "//" switches to a different navigation stack instead of pushing to the active one:
-            await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(ListOfConversationsPage)}");
         }
 
 

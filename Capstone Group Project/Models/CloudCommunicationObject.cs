@@ -20,11 +20,4 @@ namespace Capstone_Group_Project.Models
         public int[] IdsOfConversationsUserIsParticipantIn { get; set; } = null;
         public ConversationInvitation[] ConversationInvitations { get; set; } = null;
     }
-
-
-    public class ConversationInvitation
-    {
-        public int Conversation_ID { get; set; } = 0;
-        public String Account_Username_Of_Sender { get; set; } = null;
-    }
 }

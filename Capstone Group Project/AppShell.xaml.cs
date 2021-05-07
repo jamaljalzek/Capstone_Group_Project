@@ -15,11 +15,17 @@ namespace Capstone_Group_Project
             Routing.RegisterRoute(nameof(ListOfConversationsPage), typeof(ListOfConversationsPage));
             Routing.RegisterRoute(nameof(CreateNewConversationPage), typeof(CreateNewConversationPage));
             Routing.RegisterRoute(nameof(IndividualConversationPage), typeof(IndividualConversationPage));
+            Routing.RegisterRoute(nameof(ListOfInvitationsPage), typeof(ListOfInvitationsPage));
+            Routing.RegisterRoute(nameof(InviteNewParticipantPage), typeof(InviteNewParticipantPage));
+            // Hide the flyout menu until the user has successfully logged in:
+            this.FlyoutBehavior = FlyoutBehavior.Disabled;
             this.CurrentItem = new LoginPage();
         }
 
         private async void OnMenuItemClicked(object sender, EventArgs e)
         {
+            // Hide the flyout menu until the user has successfully logged in:
+            this.FlyoutBehavior = FlyoutBehavior.Disabled;
             await Shell.Current.GoToAsync("//LoginPage");
         }
     }

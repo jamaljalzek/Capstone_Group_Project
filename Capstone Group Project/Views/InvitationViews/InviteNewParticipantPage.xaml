@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Capstone_Group_Project.Views.InviteNewParticipantPage"
+             Shell.PresentationMode="ModalAnimated"
+             Title="Invite new participant"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true">
+
+    <ContentPage.Content>
+        
+        <StackLayout Spacing="10" VerticalOptions="Center" Padding="50">
+
+            <Label Text="Enter the account username to send an invitation to:" FontSize="Medium" HorizontalOptions="Center"/>
+
+            <Entry Text="{Binding EnteredUsername, Mode=OneWayToSource}" FontSize="Medium"/>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+
+                <Button Text="Invite" Command="{Binding InviteCommand}" HorizontalOptions="Center"/>
+
+                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="Center"/>
+
+            </StackLayout>
+
+            <Label Text="{Binding DisplayedStatusMessage, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>
+
+        </StackLayout>
+        
+    </ContentPage.Content>
+    
+</ContentPage>

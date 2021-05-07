@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	
+	<!-- NEEDED TO SEND CLEARTEXT HTTP REQUESTS ON IOS, REMOVE THIS IF WE GET HTTPS SET UP ON AWS -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!--Include to allow all connections (DANGER)-->
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	
+	
     <key>UIDeviceFamily</key>
     <array>
         <integer>1</integer>

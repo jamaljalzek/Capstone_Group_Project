@@ -44,7 +44,6 @@ namespace Capstone_Group_Project.ViewModels
         {
             if (conversationListing == null)
                 return;
-
             IdOfConversationListingLastTapped = conversationListing.ConversationId;
             // This will push the ConversationListingDetailPage onto the navigation stack
             await Shell.Current.GoToAsync(nameof(IndividualConversationPage));
