@@ -13,6 +13,12 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
         private static String ConversationPrivateKey = null;
 
 
+        public static void SetCurrentConversationID(int conversationId)
+        {
+            ConversationId = conversationId;
+        }
+
+
         public static int GetCurrentConversationID()
         {
             return ConversationId;
@@ -25,13 +31,13 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
         }
 
 
-        public static async Task<Message[]> LoadInitialMessagesForGivenConversation(int conversationId, int numberOfMessagesToLoad)
+        public static async Task<Message[]> LoadInitialMessagesForCurrentConversation(int numberOfMessagesToLoad)
         {
             // While the cloud is not functional, we can just simply load some dummy messages for the current conversation:
-            CreateAndReturnTestMessages(conversationId, numberOfMessagesToLoad);
+            CreateAndReturnTestMessages(numberOfMessagesToLoad);
             return RecentlyLoadedMessages;
 
-            LoadInitialMessagesAndPrivateKeyRequestObject loadInitialMessagesAndPrivateKeyRequestObject = new LoadInitialMessagesAndPrivateKeyRequestObject(conversationId, numberOfMessagesToLoad);
+            LoadInitialMessagesAndPrivateKeyRequestObject loadInitialMessagesAndPrivateKeyRequestObject = new LoadInitialMessagesAndPrivateKeyRequestObject(numberOfMessagesToLoad);
             LoadMessagesAndPrivateKeyResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesAndPrivateKeyResponseObject>(loadInitialMessagesAndPrivateKeyRequestObject);
             RecentlyLoadedMessages = cloudResponseObject.Messages;
             ConversationPrivateKey = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(cloudResponseObject.Conversation_Private_Key, CurrentLoginState.GetCurrentUserPrivateKey());
@@ -44,13 +50,13 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
         }
 
 
-        public static async Task<Message[]> LoadRangeOfMessagesForGivenConversation(int startingMessageNumberInclusive, int endingMessageNumberInclusive, int conversationId)
+        public static async Task<Message[]> LoadRangeOfMessagesForCurrentConversation(int startingMessageNumberInclusive, int endingMessageNumberInclusive)
         {
             // While the cloud is not functional, we can just simply load some dummy messages for the current conversation:
-            CreateAndReturnTestMessages(conversationId, 25);
+            CreateAndReturnTestMessages(25);
             return RecentlyLoadedMessages;
 
-            LoadSpecifiedMessagesAndPrivateKeyRequestObject loadSpecifiedMessagesAndPrivateKeyRequestObject = new LoadSpecifiedMessagesAndPrivateKeyRequestObject(conversationId, startingMessageNumberInclusive, endingMessageNumberInclusive);
+            LoadSpecifiedMessagesAndPrivateKeyRequestObject loadSpecifiedMessagesAndPrivateKeyRequestObject = new LoadSpecifiedMessagesAndPrivateKeyRequestObject(startingMessageNumberInclusive, endingMessageNumberInclusive);
             LoadMessagesAndPrivateKeyResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesAndPrivateKeyResponseObject>(loadSpecifiedMessagesAndPrivateKeyRequestObject);
             String conversationPrivateKey = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(cloudResponseObject.Conversation_Private_Key, CurrentLoginState.GetCurrentUserPrivateKey());
             foreach (Message currentEncryptedMessage in cloudResponseObject.Messages)
@@ -64,7 +70,7 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
         }
 
 
-        private static void CreateAndReturnTestMessages(int conversationId, int numberOfMessagesToLoad)
+        private static void CreateAndReturnTestMessages(int numberOfMessagesToLoad)
         {
             RecentlyLoadedMessages = new Message[numberOfMessagesToLoad];
             for (int messageNumber = 1; messageNumber <= numberOfMessagesToLoad; ++messageNumber)
@@ -73,7 +79,7 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
                 {
                     MessageSenderUsername = "Jamal",
                     TimeAndDateMessageWasSent = "4/9/2021",
-                    MessageBody = "TEST MESSAGE #" + messageNumber + " FOR CONVERSATION #" + conversationId + "blah blah blah blah blah blah blah blah"
+                    MessageBody = "TEST MESSAGE #" + messageNumber + " FOR CONVERSATION #" + ConversationId + "blah blah blah blah blah blah blah blah"
                 };
                 RecentlyLoadedMessages[messageNumber - 1] = currentMessage;
             }
@@ -87,11 +93,11 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
             public int NumberOfMessagesToLoad { get; set; } = 0;
 
 
-            public LoadInitialMessagesAndPrivateKeyRequestObject(int conversationId, int numberOfMessagesToLoad)
+            public LoadInitialMessagesAndPrivateKeyRequestObject(int numberOfMessagesToLoad)
             {
                 this.TaskRequested = "LOAD_MOST_RECENT_MESSAGES_AND_PRIVATE_KEY";
                 this.Account_ID = CurrentLoginState.GetCurrentUserAccountID();
-                this.Conversation_ID = conversationId;
+                this.Conversation_ID = CurrentConversationState.ConversationId;
                 this.NumberOfMessagesToLoad = numberOfMessagesToLoad;
             }
         }
@@ -114,11 +120,11 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
             public int EndingMessageNumberInclusive { get; set; } = 0;
 
 
-            public LoadSpecifiedMessagesAndPrivateKeyRequestObject(int conversationId, int startingMessageNumberInclusive, int endingMessageNumberInclusive)
+            public LoadSpecifiedMessagesAndPrivateKeyRequestObject(int startingMessageNumberInclusive, int endingMessageNumberInclusive)
             {
                 this.TaskRequested = "LOAD_SPECIFIED_MESSAGE_RANGE_AND_PRIVATE_KEY";
                 this.Account_ID = CurrentLoginState.GetCurrentUserAccountID(); ;
-                this.Conversation_ID = conversationId;
+                this.Conversation_ID = CurrentConversationState.ConversationId;
                 this.StartingMessageNumberInclusive = startingMessageNumberInclusive;
                 this.EndingMessageNumberInclusive = endingMessageNumberInclusive;
             }

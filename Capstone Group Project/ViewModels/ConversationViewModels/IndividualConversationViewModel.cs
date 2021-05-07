@@ -10,6 +10,7 @@ namespace Capstone_Group_Project.ViewModels
     class IndividualConversationViewModel : BaseViewModel
     {
         public int CurrentConverstionIdNumber { get; set; } = 0;
+        public Command SendNewInviteCommand { get; set; } = null;
         public String EnteredMessage { get; set; } = "";
         public Command SendMessageCommand { get; set; } = null;
         public Command LoadMoreMessagesCommand { get; set; } = null;
@@ -24,9 +25,17 @@ namespace Capstone_Group_Project.ViewModels
         {
             CurrentConverstionIdNumber = ListOfConversationsViewModel.IdOfConversationListingLastTapped;
             UpdateUserInterfaceElementBoundToGivenVariable("CurrentConversationIdNumber");
+            CurrentConversationState.SetCurrentConversationID(CurrentConverstionIdNumber);
+            SendNewInviteCommand = new Command(InviteNewParticipant);
             SendMessageCommand = new Command(SendEnteredMessageToAllConversationParticipants);
             LoadMoreMessagesCommand = new Command(DisplayAnotherSetOfMessagesForThisConversation);
             DisplayInitialSetOfMessagesForThisConversation();
+        }
+
+
+        private async void InviteNewParticipant(object obj)
+        {
+            await Shell.Current.GoToAsync(nameof(InviteNewParticipantPage));
         }
 
 
@@ -38,7 +47,7 @@ namespace Capstone_Group_Project.ViewModels
             //SendConversationMessageHandler.SendIndividualMessageToAllConversationParticipants(EnteredMessage, currentDateAndTime);
             DisplaySentMessageOnOurEnd(currentDateAndTime);
             EnteredMessage = "";
-            UpdateUserInterfaceElementBoundToGivenVariable(EnteredMessage);
+            UpdateUserInterfaceElementBoundToGivenVariable("EnteredMessage");
         }
 
 
@@ -59,7 +68,7 @@ namespace Capstone_Group_Project.ViewModels
         private async void DisplayInitialSetOfMessagesForThisConversation()
         {
             LoadedMessagesEndingMessageNumberInclusive = NUMBER_OF_MESSAGES_TO_LOAD_AT_A_TIME;
-            Message[] listOfLoadedMessages = await CurrentConversationState.LoadInitialMessagesForGivenConversation(CurrentConverstionIdNumber, LoadedMessagesEndingMessageNumberInclusive);
+            Message[] listOfLoadedMessages = await CurrentConversationState.LoadInitialMessagesForCurrentConversation(LoadedMessagesEndingMessageNumberInclusive);
             LoadedMessages = new ObservableCollection<Message>(listOfLoadedMessages);
         }
 
@@ -68,7 +77,7 @@ namespace Capstone_Group_Project.ViewModels
         {
             int StartingNumberForNextSetOfMessagesToLoadInclusive = LoadedMessagesEndingMessageNumberInclusive + 1;
             LoadedMessagesEndingMessageNumberInclusive += NUMBER_OF_MESSAGES_TO_LOAD_AT_A_TIME;
-            Message[] listOfRecentlyLoadedMessages = await CurrentConversationState.LoadRangeOfMessagesForGivenConversation(StartingNumberForNextSetOfMessagesToLoadInclusive, LoadedMessagesEndingMessageNumberInclusive, CurrentConverstionIdNumber);
+            Message[] listOfRecentlyLoadedMessages = await CurrentConversationState.LoadRangeOfMessagesForCurrentConversation(StartingNumberForNextSetOfMessagesToLoadInclusive, LoadedMessagesEndingMessageNumberInclusive);
             for (int currentIndex = listOfRecentlyLoadedMessages.Length - 1; currentIndex >= 0; --currentIndex)
             {
                 Message currentRecentlyLoadedMessage = listOfRecentlyLoadedMessages[currentIndex];

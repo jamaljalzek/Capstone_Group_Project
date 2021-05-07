@@ -29,13 +29,18 @@
     <EmbeddedResource Update="Views\ConversationViews\ListOfConversationsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\InvitationViews\ListOfInvitationsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\InvitationViews\InviteNewParticipantPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\UserAccountViews\RegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ProgramBehavior\ConversationSystem\ConversationInvitationSystem\" />
     <Folder Include="ProgramBehavior\ConversationSystem\ConversationReceivingMessageSystem\" />
   </ItemGroup>
 </Project>

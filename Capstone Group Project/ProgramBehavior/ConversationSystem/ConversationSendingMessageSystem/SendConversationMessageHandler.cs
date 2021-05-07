@@ -25,10 +25,11 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
 
             public SendMessageRequestObject(String messagePlaintext, DateTime dateAndTimeMessageWasSent)
             {
-                Sender_Account_ID = CurrentLoginState.GetCurrentUserAccountID();
-                Conversation_ID = CurrentConversationState.GetCurrentConversationID();
-                Sent_Date_And_Time = dateAndTimeMessageWasSent.ToUniversalTime().ToString();
-                Message_Ciphertext = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String(messagePlaintext, CurrentConversationState.GetCurrentConversationPrivateKey());
+                this.TaskRequested = "SEND_NEW_MESSAGE";
+                this.Sender_Account_ID = CurrentLoginState.GetCurrentUserAccountID();
+                this.Conversation_ID = CurrentConversationState.GetCurrentConversationID();
+                this.Sent_Date_And_Time = dateAndTimeMessageWasSent.ToUniversalTime().ToString();
+                this.Message_Ciphertext = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String(messagePlaintext, CurrentConversationState.GetCurrentConversationPrivateKey());
             }
         }
     }
