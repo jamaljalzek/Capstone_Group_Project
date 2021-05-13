@@ -1,6 +1,7 @@
 ﻿using Capstone_Group_Project.Models;
 using Capstone_Group_Project.ProgramBehavior.UserAccountSystem;
 using Capstone_Group_Project.Views;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
@@ -27,7 +28,7 @@ namespace Capstone_Group_Project.ViewModels
 
         private void LoadAndDisplayAllConversationListings()
         {
-            int[] idsOfConversationsUserIsParticipantIn = CurrentLoginState.GetIdsOfConversationsCurrentUserIsParticipantIn();
+            List<int> idsOfConversationsUserIsParticipantIn = CurrentLoginState.GetIdsOfConversationsCurrentUserIsParticipantIn();
             ConversationListings.Clear();
             foreach (int currentConversationId in idsOfConversationsUserIsParticipantIn)
             {
@@ -40,7 +41,7 @@ namespace Capstone_Group_Project.ViewModels
         }
 
 
-        async void OnConversationListingSelected(ConversationListing conversationListing)
+        private async void OnConversationListingSelected(ConversationListing conversationListing)
         {
             if (conversationListing == null)
                 return;
@@ -56,7 +57,7 @@ namespace Capstone_Group_Project.ViewModels
         }
 
 
-        public static void AddNewConversationListing(int conversationID)
+        public static void AddNewConversationListingToDisplay(int conversationID)
         {
             ConversationListing newConversationListing = new ConversationListing()
             {

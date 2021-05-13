@@ -12,6 +12,13 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
         {
             SendMessageRequestObject sendMessageRequestObject = new SendMessageRequestObject(messageBody, dateAndTimeMessageWasSent);
             MobileApplicationHttpClient.PostObjectAsynchronouslyWithoutWaitingForResponse(sendMessageRequestObject);
+            Message newMessage = new Message()
+            {
+                MessageSenderUsername = null,
+                TimeAndDateMessageWasSent = dateAndTimeMessageWasSent.ToString(),
+                MessageBody = messageBody
+            };
+            CurrentConversationState.AddToCurrentConversationLoadedMessages(newMessage);
         }
 
 
