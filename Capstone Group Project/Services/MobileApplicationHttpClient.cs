@@ -49,12 +49,43 @@ namespace Capstone_Group_Project.Services
         }
 
 
+        public static async Task<Type> PostObjectAsynchronouslyAndReturnResultAsSpecificedType<Type>(Object objectToConvertToJson, String relativeUrl)
+        {
+            String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
+            String responseJsonString = await PostJsonStringAsynchronouslyAndReturnResultAsJsonString(jsonStringRepresentation, relativeUrl);
+            // Once we start receiving JSON objects back from the cloud, we can convert them into an instance of a specific class:
+            Type result = JsonConvert.DeserializeObject<Type>(responseJsonString);
+            return result;
+        }
+
+
         private static async Task<String> PostJsonStringAsynchronouslyAndReturnResultAsJsonString(String jsonStringToSend)
         {
             StringContent content = new StringContent(jsonStringToSend, Encoding.UTF8, "application/json");
             try
             {
                 HttpResponseMessage responseMessage = await httpClient.PostAsync(baseURL, content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    String responseJsonString = await responseMessage.Content.ReadAsStringAsync();
+                    return responseJsonString;
+                }
+            }
+            catch (HttpRequestException exception)
+            {
+                Console.WriteLine("\nHttpRequestException Caught!");
+                Console.WriteLine("Message :{0} ", exception.Message);
+            }
+            return null;
+        }
+
+
+        private static async Task<String> PostJsonStringAsynchronouslyAndReturnResultAsJsonString(String jsonStringToSend, String relativeUrl)
+        {
+            StringContent content = new StringContent(jsonStringToSend, Encoding.UTF8, "application/json");
+            try
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(relativeUrl, content);
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     String responseJsonString = await responseMessage.Content.ReadAsStringAsync();

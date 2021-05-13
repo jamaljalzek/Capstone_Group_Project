@@ -17,7 +17,7 @@ namespace Capstone_Group_Project.Models
         public int Account_ID { get; set; } = 0;
         public String Public_Key { get; set; } = null;
         public String Private_Key { get; set; } = null;
-        public int[] IdsOfConversationsUserIsParticipantIn { get; set; } = null;
+        public int[] IDsOfConversationsUserIsParticipantIn { get; set; } = null;
         public ConversationInvitation[] ConversationInvitations { get; set; } = null;
     }
 }

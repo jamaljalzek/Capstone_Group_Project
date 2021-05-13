@@ -6,6 +6,12 @@
              x:Class="Capstone_Group_Project.Views.ListOfInvitationsPage"
              Title="Invitations">
 
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="Refresh" Command="{Binding CheckForNewInvitationsCommand}" />
+
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
 
         <CollectionView x:Name="InvitationListingsView" ItemsSource="{Binding ConversationInvitations}" SelectionMode="None">
@@ -17,7 +23,7 @@
 
                     <StackLayout Padding="10">
 
-                        <Label Text="{Binding Account_Username_Of_Sender, StringFormat='New conversation invitation from: {0}'}" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Medium" />
+                        <Label Text="{Binding Account_Username, StringFormat='New conversation invitation from: {0}'}" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Medium" />
 
                         <Label Text="{Binding Conversation_ID, StringFormat='Conversation ID: {0}'}" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" />
 
