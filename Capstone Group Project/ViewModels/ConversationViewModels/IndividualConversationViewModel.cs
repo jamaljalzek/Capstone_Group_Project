@@ -56,7 +56,7 @@ namespace Capstone_Group_Project.ViewModels
 
         private async void InviteNewParticipant(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(InviteNewParticipantPage));
+            await Shell.Current.Navigation.PushModalAsync(new InviteNewParticipantPage());
         }
 
 
