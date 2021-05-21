@@ -14,7 +14,7 @@ namespace Capstone_Group_Project.ProgramBehavior.InvitationSystem
         {
             int startingConversationIdOfAnyNewInvitationsInclusive = CurrentLoginState.GetConversationIdOfMostRecentlyLoadedInvitation() + 1;
             LoadNewConversationInvitationsRequestObject loadNewConversationInvitationsRequestObject = new LoadNewConversationInvitationsRequestObject(startingConversationIdOfAnyNewInvitationsInclusive);
-            LoadNewConversationInvitationsReponseObject loadNewConversationInvitationsReponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadNewConversationInvitationsReponseObject>(loadNewConversationInvitationsRequestObject, "refresh_invitations.php");
+            LoadNewConversationInvitationsReponseObject loadNewConversationInvitationsReponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadNewConversationInvitationsReponseObject>(loadNewConversationInvitationsRequestObject, "load_invitations.php");
             CurrentLoginState.AddNewConversationInvitations(loadNewConversationInvitationsReponseObject.ConversationInvitations);
             return loadNewConversationInvitationsReponseObject.ConversationInvitations;
         }

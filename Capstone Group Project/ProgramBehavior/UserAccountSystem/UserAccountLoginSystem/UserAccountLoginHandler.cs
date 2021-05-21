@@ -1,6 +1,9 @@
 ﻿using Capstone_Group_Project.Models;
 using Capstone_Group_Project.Services;
+using Newtonsoft.Json;
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLoginSystem
@@ -12,9 +15,6 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLo
 
         public static async Task<bool> AttemptToLogUserIn(String enteredUsername, String enteredPassword)
         {
-            // Debugging account:
-            if (enteredUsername.Equals("test"))
-                return true;
             bool wasLoginAttemptSuccessful = await AttemptToLoadUserAccountDetailsFromTheCloud(enteredUsername, enteredPassword);
             return wasLoginAttemptSuccessful;
         }
@@ -24,19 +24,21 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem.UserAccountLo
         {
             LogUserIntoAccountRequestObject logUserIntoAccountRequestObject = new LogUserIntoAccountRequestObject(enteredUsername, enteredPassword);
             // We expect the cloud to return the exact same LogUserIntoAccountRequestObject that we originally sent:
-            LogUserIntoAccountResponseObject loginAttemptResponseFromCloudObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LogUserIntoAccountResponseObject>(logUserIntoAccountRequestObject, "login.php");
-            if (loginAttemptResponseFromCloudObject.ResultOfRequest.Equals("USERNAME_DOES_NOT_EXIST"))
+            HttpResponseMessage httpResponse = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnHttpResponse(logUserIntoAccountRequestObject, "login.php");
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
+                String responseJsonString = await httpResponse.Content.ReadAsStringAsync();
+                LogUserIntoAccountResponseObject loginAttemptResponseFromCloudObject = JsonConvert.DeserializeObject<LogUserIntoAccountResponseObject>(responseJsonString);
+                CurrentLoginState.LoadNewLoginState(loginAttemptResponseFromCloudObject, enteredPassword);
+                return true;
+            }
+            if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                 errorMessage = "ERROR: the entered username does not exist!";
-                return false;
-            }
-            if (loginAttemptResponseFromCloudObject.ResultOfRequest.Equals("PASSWORDS_DO_NOT_MATCH"))
-            {
+            else if (httpResponse.StatusCode == HttpStatusCode.Unauthorized)
                 errorMessage = "ERROR: the entered password was incorrect!";
-                return false;
-            }
-            CurrentLoginState.LoadNewLoginState(loginAttemptResponseFromCloudObject, enteredPassword);
-            return true;
+            else // Otherwise, some other unknown error occured:
+                errorMessage = "ERROR: could not log in at this time!";
+            return false;
         }
 
 

@@ -29,7 +29,7 @@ namespace Capstone_Group_Project.ProgramBehavior.InvitationSystem
         private static async Task<String> GetPublicKeyOfGivenAccountUsername(String accountUsername)
         {
             LookUpGivenUsernamePublicKeyObject lookUpGivenUsernamePublicKeyObject = new LookUpGivenUsernamePublicKeyObject(accountUsername);
-            LookUpGivenUsernamePublicKeyObject resultOfLookUpRequest = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LookUpGivenUsernamePublicKeyObject>(lookUpGivenUsernamePublicKeyObject);
+            LookUpGivenUsernamePublicKeyObject resultOfLookUpRequest = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LookUpGivenUsernamePublicKeyObject>(lookUpGivenUsernamePublicKeyObject, "lookup_public_key.php");
             if (resultOfLookUpRequest.ResultOfRequest.Equals("USERNAME_NOT_FOUND"))
                 return null;
             return resultOfLookUpRequest.Public_Key;
@@ -64,6 +64,7 @@ namespace Capstone_Group_Project.ProgramBehavior.InvitationSystem
                 this.Recipient_Account_Username = recipientAccountUsername;
                 this.Sender_Account_ID = CurrentLoginState.GetCurrentUserAccountID();
                 this.Conversation_ID = CurrentConversationState.GetCurrentConversationID();
+                String key = CurrentConversationState.GetCurrentConversationPrivateKey();
                 this.Conversation_Private_Key = AsymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String(CurrentConversationState.GetCurrentConversationPrivateKey(), recipientPublicKey);
             }
         }

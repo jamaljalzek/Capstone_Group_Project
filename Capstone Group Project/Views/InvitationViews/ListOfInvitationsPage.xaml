@@ -32,7 +32,7 @@
                             <!-- The binding we have set up for the Command looks convoluted, but it allows us to call the Command in the ListOfConversationsViewModel, rather than the ConversationListing model that is used above. -->
                             <Button Text="Accept" Command="{Binding Source={RelativeSource AncestorType={x:Type local:ListOfInvitationsViewModel}}, Path=AcceptInvitationCommand}" CommandParameter="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="LightGreen"/>
 
-                            <Button Text="Decline" Command="{Binding Source={RelativeSource AncestorType={x:Type local:ListOfInvitationsViewModel}}, Path=RejectInvitationCommand}" CommandParameter="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="LightCoral"/>
+                            <Button Text="Decline" Command="{Binding Source={RelativeSource AncestorType={x:Type local:ListOfInvitationsViewModel}}, Path=DeclineInvitationCommand}" CommandParameter="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="LightCoral"/>
 
                         </StackLayout>
 

@@ -32,11 +32,11 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
         public static async Task<Message[]> LoadInitialMessagesForCurrentConversation(int numberOfMessagesToLoad)
         {
             // While the cloud is not functional, we can just simply load some dummy messages for the current conversation:
-            CreateAndReturnTestMessages(numberOfMessagesToLoad);
-            return RecentlyLoadedMessages;
+            //CreateAndReturnTestMessages(numberOfMessagesToLoad);
+            //return RecentlyLoadedMessages;
 
             LoadInitialMessagesAndPrivateKeyRequestObject loadInitialMessagesAndPrivateKeyRequestObject = new LoadInitialMessagesAndPrivateKeyRequestObject(numberOfMessagesToLoad);
-            LoadInitialMessagesAndPrivateKeyResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadInitialMessagesAndPrivateKeyResponseObject>(loadInitialMessagesAndPrivateKeyRequestObject);
+            LoadInitialMessagesAndPrivateKeyResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadInitialMessagesAndPrivateKeyResponseObject>(loadInitialMessagesAndPrivateKeyRequestObject, "load_conversation.php");
             String conversationPrivateKey = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(cloudResponseObject.Conversation_Private_Key, CurrentLoginState.GetCurrentUserPrivateKey());
             CurrentConversationState.SetCurrentConversationPrivateKey(conversationPrivateKey);
             foreach (Message currentMessage in cloudResponseObject.Messages)
@@ -46,6 +46,7 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
                 String messageCiphertext = currentMessage.MessageBody;
                 currentMessage.MessageBody = SymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(messageCiphertext, conversationPrivateKey);
             }
+            //Array.Reverse<Message>(cloudResponseObject.Messages);
             CurrentConversationState.SetCurrentConversationInitialSetOfMessages(cloudResponseObject.Messages);
             return cloudResponseObject.Messages;
         }
@@ -54,11 +55,11 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
         public static async Task<Message[]> LoadRangeOfMessagesForCurrentConversation(int startingMessageNumberInclusive, int endingMessageNumberInclusive)
         {
             // While the cloud is not functional, we can just simply load some dummy messages for the current conversation:
-            CreateAndReturnTestMessages(25);
-            return RecentlyLoadedMessages;
+            //CreateAndReturnTestMessages(25);
+            //return RecentlyLoadedMessages;
 
             LoadSpecifiedMessagesRequestObject loadSpecifiedMessagesAndPrivateKeyRequestObject = new LoadSpecifiedMessagesRequestObject(startingMessageNumberInclusive, endingMessageNumberInclusive);
-            LoadMessagesResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesResponseObject>(loadSpecifiedMessagesAndPrivateKeyRequestObject);
+            LoadMessagesResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesResponseObject>(loadSpecifiedMessagesAndPrivateKeyRequestObject, "load_messages_range.php");
             foreach (Message currentEncryptedMessage in cloudResponseObject.Messages)
             {
                 String messageCiphertext = currentEncryptedMessage.MessageBody;
@@ -72,7 +73,7 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
         public static async Task<Message[]> LoadAnyNewMessagesForCurrentConversation(int loadedMessagesEndingMessageNumberInclusive)
         {
             LoadNewMessagesRequestObject loadInitialMessagesAndPrivateKeyRequestObject = new LoadNewMessagesRequestObject(loadedMessagesEndingMessageNumberInclusive + 1);
-            LoadMessagesResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesResponseObject>(loadInitialMessagesAndPrivateKeyRequestObject);
+            LoadMessagesResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesResponseObject>(loadInitialMessagesAndPrivateKeyRequestObject, "load_new_messages.php");
             foreach (Message currentMessage in cloudResponseObject.Messages)
             {
                 String messageCiphertext = currentMessage.MessageBody;

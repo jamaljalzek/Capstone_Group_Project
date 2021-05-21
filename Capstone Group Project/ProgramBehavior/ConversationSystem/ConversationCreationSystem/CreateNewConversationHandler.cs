@@ -1,6 +1,7 @@
 ﻿using Capstone_Group_Project.Models;
 using Capstone_Group_Project.ProgramBehavior.UserAccountSystem;
 using Capstone_Group_Project.Services;
+using Capstone_Group_Project.ViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -23,7 +24,11 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
             // We expect the cloud to return the exact same CreateNewConversationRequestObject that we originally sent:
             createNewConversationRequestObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<CreateNewConversationRequestObject>(createNewConversationRequestObject, "create_conversation.php");
             if (createNewConversationRequestObject.ResultOfRequest.Equals("CONVERSATION_CREATION_SUCCESSFUL"))
+            {
+                CurrentLoginState.AddIdToListOfConversationsCurrentUserIsParticipantIn(createNewConversationRequestObject.Conversation_ID);
+                ListOfConversationsViewModel.AddNewConversationListingToDisplay(createNewConversationRequestObject.Conversation_ID);
                 return "New conversation created!\nConversation ID: " + createNewConversationRequestObject.Conversation_ID;
+            }
             return "ERROR, the new conversation was not successfully created!";
         }
 

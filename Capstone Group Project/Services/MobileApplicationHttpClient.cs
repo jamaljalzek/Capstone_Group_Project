@@ -2,6 +2,7 @@
 using Capstone_Group_Project.ProgramBehavior.UserAccountSystem;
 using Newtonsoft.Json;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Capstone_Group_Project.Services
         }
 
 
-        public static async Task<System.Net.HttpStatusCode> PostObjectAsynchronouslyAndReturnHttpResponseCode(Object objectToConvertToJson, String relativeUri)
+        public static async Task<HttpStatusCode> PostObjectAsynchronouslyAndReturnHttpResponseCode(Object objectToConvertToJson, String relativeUri)
         {
             String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
             StringContent content = new StringContent(jsonStringRepresentation, Encoding.UTF8, "application/json");
@@ -37,6 +38,24 @@ namespace Capstone_Group_Project.Services
                 Console.WriteLine("Message :{0} ", exception.Message);
             }
             return System.Net.HttpStatusCode.NotFound;
+        }
+
+
+        public static async Task<HttpResponseMessage> PostObjectAsynchronouslyAndReturnHttpResponse(Object objectToConvertToJson, String relativeUri)
+        {
+            String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
+            StringContent content = new StringContent(jsonStringRepresentation, Encoding.UTF8, "application/json");
+            try
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(relativeUri, content);
+                return responseMessage;
+            }
+            catch (HttpRequestException exception)
+            {
+                Console.WriteLine("\nHttpRequestException Caught!");
+                Console.WriteLine("Message :{0} ", exception.Message);
+            }
+            return null;
         }
 
 
