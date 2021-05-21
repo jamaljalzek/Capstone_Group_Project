@@ -19,6 +19,8 @@
 
                 <Button Text="Invite" Command="{Binding InviteCommand}" HorizontalOptions="Center"/>
 
+                <Button Text="Back" Command="{Binding BackCommand}" HorizontalOptions="Center"/>
+
             </StackLayout>
 
             <Label Text="{Binding DisplayedStatusMessage, Mode=OneWay}" FontSize="Medium" HorizontalOptions="Center"/>

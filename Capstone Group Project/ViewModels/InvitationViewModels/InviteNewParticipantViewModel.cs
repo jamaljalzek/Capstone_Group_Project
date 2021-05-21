@@ -1,4 +1,5 @@
 ﻿using Capstone_Group_Project.ProgramBehavior.InvitationSystem;
+using Capstone_Group_Project.Views;
 using System;
 using Xamarin.Forms;
 
@@ -8,14 +9,14 @@ namespace Capstone_Group_Project.ViewModels.InvitationViewModels
     {
         public String EnteredUsername { get; set; } = "";
         public Command InviteCommand { get; set; } = null;
-        public Command CancelCommand { get; set; } = null;
+        public Command BackCommand { get; set; } = null;
         public String DisplayedStatusMessage { get; set; } = "";
 
 
         public InviteNewParticipantViewModel()
         {
             InviteCommand = new Command(SendNewInvitationToEnteredUserAccount);
-            CancelCommand = new Command(CancelInvitationCreation);
+            BackCommand = new Command(GoBack);
         }
 
 
@@ -28,10 +29,10 @@ namespace Capstone_Group_Project.ViewModels.InvitationViewModels
         }
 
 
-        private async void CancelInvitationCreation()
+        private async void GoBack()
         {
             // This will pop the current page off the navigation stack:
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }
