@@ -24,9 +24,7 @@ namespace Capstone_Group_Project
 
         private async void OnMenuItemClicked(object sender, EventArgs e)
         {
-            // Hide the flyout menu until the user has successfully logged in:
-            this.FlyoutBehavior = FlyoutBehavior.Disabled;
-            await Shell.Current.GoToAsync("//LoginPage");
+            App.Current.MainPage = new AppShell();
         }
     }
 }
