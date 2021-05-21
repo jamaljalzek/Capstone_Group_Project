@@ -21,7 +21,7 @@ namespace Capstone_Group_Project.ViewModels.InvitationViewModels
 
         private async void SendNewInvitationToEnteredUserAccount()
         {
-            if (EnteredUsername == null)
+            if (EnteredUsername == null || EnteredUsername.Length == 0)
                 return;
             DisplayedStatusMessage = await InvitationSender.SendNewConversationInvitationToUserAccount(EnteredUsername);
             UpdateUserInterfaceElementBoundToGivenVariable("DisplayedStatusMessage");

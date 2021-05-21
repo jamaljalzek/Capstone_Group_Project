@@ -38,7 +38,7 @@ namespace Capstone_Group_Project.Services
         public static String EncryptPlaintextStringToCiphertextBase64String(String plaintextString, String publicKeyXmlString)
         {
             // We most likely will need to change the encoding method to Unicode to support emojis in the future:
-            byte[] plaintextByteArray = Encoding.ASCII.GetBytes(plaintextString);
+            byte[] plaintextByteArray = Encoding.UTF8.GetBytes(plaintextString);  //Encoding.ASCII.GetBytes(plaintextString);
             RSA rsa = RSA.Create();
             rsa.FromXmlString(publicKeyXmlString);
             // EncryptValue(plaintextByteArray) does not seem to work properly due to padding issues,
@@ -63,7 +63,7 @@ namespace Capstone_Group_Project.Services
             // For the best security practices, we immediately zero out all of the data in the RSA instance, and then destroy it:
             rsa.Clear();
             rsa.Dispose();
-            String plaintextString = Encoding.ASCII.GetString(plaintextByteArray);
+            String plaintextString = Encoding.UTF8.GetString(plaintextByteArray); //Encoding.ASCII.GetString(plaintextByteArray);
             return plaintextString;
         }
 
@@ -87,8 +87,8 @@ namespace Capstone_Group_Project.Services
         // 1. Encrypt/decrypt a user account's private ASYMMETRIC key (from the class above) with the user's plaintext password.
         // 2. Encrypt/decrypt all messages in a given conversation with that conversation's private SYMMETRIC key (from this class).
 
-        // This IV will eventually be hard coded in so that it's the exact same across all instances of this mobile application:
-        private static byte[] IV = Aes.Create().IV;
+        // We set the IV so that it's the exact same across all instances of this mobile application:
+        private static byte[] IV = new byte[] { 71, 90, 191, 248, 125, 83, 86, 195, 12, 142, 9, 104, 115, 149, 208, 232 };
         // Technically it is more secure to store the IV along with the symmetric private key itself, but at least for Version 1.0 we will omit this step.
 
 
@@ -104,7 +104,7 @@ namespace Capstone_Group_Project.Services
             aes.Clear();
             aes.Dispose();
             // We most likely will need to change the encoding method to Unicode to support emojis in the future:
-            byte[] plaintextByteArray = Encoding.ASCII.GetBytes(plaintextString);
+            byte[] plaintextByteArray = Encoding.UTF8.GetBytes(plaintextString); // Encoding.ASCII.GetBytes(plaintextString);
             byte[] ciphertextByteArray = encryptor.TransformFinalBlock(plaintextByteArray, 0, plaintextByteArray.Length);
             // Like with the AES instance above, for the best security practices we immediately destroy the encryptor instance:
             encryptor.Dispose();
@@ -128,7 +128,7 @@ namespace Capstone_Group_Project.Services
             byte[] plaintextByteArray = decryptor.TransformFinalBlock(ciphertextByteArray, 0, ciphertextByteArray.Length);
             // Like with the AES instance above, for the best security practices we immediately destroy the decryptor instance:
             decryptor.Dispose();
-            String plaintextString = Encoding.ASCII.GetString(plaintextByteArray);
+            String plaintextString = Encoding.UTF8.GetString(plaintextByteArray); //Encoding.ASCII.GetString(plaintextByteArray);
             return plaintextString;
         }
 

@@ -83,6 +83,8 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem
 
         public static int GetConversationIdOfMostRecentlyLoadedInvitation()
         {
+            if (currentLoginState.ConversationInvitations.Count == 0)
+                return -1;
             int indexOfMostRecentConversationInvitation = currentLoginState.ConversationInvitations.Count - 1;
             return currentLoginState.ConversationInvitations[indexOfMostRecentConversationInvitation].Conversation_ID;
         }
