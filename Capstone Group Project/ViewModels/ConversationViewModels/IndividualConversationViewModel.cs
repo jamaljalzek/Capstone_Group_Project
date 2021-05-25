@@ -72,7 +72,6 @@ namespace Capstone_Group_Project.ViewModels
                 EnteredMessage = "";
                 UpdateUserInterfaceElementBoundToGivenVariable("EnteredMessage");
             }
-            //DisplaySentMessageOnOurEnd(currentDateAndTime);
         }
 
 

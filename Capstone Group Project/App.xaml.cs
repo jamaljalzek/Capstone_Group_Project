@@ -1,5 +1,4 @@
-﻿using Capstone_Group_Project.Services;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Capstone_Group_Project
 {
@@ -9,8 +8,6 @@ namespace Capstone_Group_Project
         public App()
         {
             InitializeComponent();
-
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 

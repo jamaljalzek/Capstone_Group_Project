@@ -51,11 +51,5 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.LoadingIndiv
         {
             AllLoadedMessages.Add(newMessageToAdd);
         }
-
-
-        public static List<Message> GetCurrentConversationLoadedMessages()
-        {
-            return AllLoadedMessages;
-        }
     }
 }

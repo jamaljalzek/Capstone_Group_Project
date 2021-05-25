@@ -9,7 +9,6 @@ namespace Capstone_Group_Project.ViewModels
 {
     class ListOfInvitationsViewModel
     {
-        private static ListOfInvitationsViewModel currentInstance = null;
         public ObservableCollection<ConversationInvitation> ConversationInvitations { get; }
         public Command CheckForNewInvitationsCommand { get; }
         public Command<ConversationInvitation> AcceptInvitationCommand { get; }
@@ -19,7 +18,6 @@ namespace Capstone_Group_Project.ViewModels
 
         public ListOfInvitationsViewModel()
         {
-            currentInstance = this;
             ConversationInvitations = new ObservableCollection<ConversationInvitation>();
             CheckForNewInvitationsCommand = new Command(OnCheckForNewInvitations);
             AcceptInvitationCommand = new Command<ConversationInvitation>(OnConversationInvitationAccepted);

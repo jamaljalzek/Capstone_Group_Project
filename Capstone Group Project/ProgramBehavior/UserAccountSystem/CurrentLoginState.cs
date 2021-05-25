@@ -16,24 +16,6 @@ namespace Capstone_Group_Project.ProgramBehavior.UserAccountSystem
         public List<ConversationInvitation> ConversationInvitations { get; set; } = null;
 
 
-        // For the time being, while the cloud is not functional we will just set up a dummy login state for testing purposes:
-        static CurrentLoginState()
-        {
-            currentLoginState = new CurrentLoginState();
-            currentLoginState.IdsOfConversationsUserIsParticipantIn = new List<int>() { 111, 222, 333, 444, 555, 666, 777 };
-            currentLoginState.ConversationInvitations = new List<ConversationInvitation>(5);
-            for (int currentInvitationNumber = 0; currentInvitationNumber < 5; ++currentInvitationNumber)
-            {
-                ConversationInvitation newInvitation = new ConversationInvitation()
-                {
-                    Conversation_ID = currentInvitationNumber * 1000,
-                    Account_Username = "AccountUsername" + currentInvitationNumber
-                };
-                currentLoginState.ConversationInvitations.Add(newInvitation);
-            }
-        }
-
-
         public static void LoadNewLoginState(LogUserIntoAccountResponseObject loginAttemptResponseFromCloudObject, String enteredPassword)
         {
             currentLoginState = new CurrentLoginState();

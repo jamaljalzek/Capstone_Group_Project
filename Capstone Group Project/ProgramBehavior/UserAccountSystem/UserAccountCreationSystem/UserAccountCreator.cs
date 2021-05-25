@@ -46,7 +46,6 @@ namespace Capstone_Group_Project.Program_Behavior.User_Account_System.User_Accou
                 this.Account_Password_Hashcode = Hashing.ConvertPasswordStringIntoSha256HashCodeBase64String(enteredPassword);
                 String publicAndPrivateKey = AsymmetricEncryption.CreateNewPublicAndPrivateKeyAndReturnAsXmlString();
                 this.Private_Key = SymmetricEncryption.EncryptPlaintextStringToCiphertextBase64String(publicAndPrivateKey, enteredPassword);
-                String decryptedPrivateKey = SymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(this.Private_Key, enteredPassword);
                 this.Public_Key = AsymmetricEncryption.ExtractPublicKeyAndReturnAsXmlString(publicAndPrivateKey);
             }
         }

@@ -12,8 +12,6 @@ namespace Capstone_Group_Project.Services
     static class MobileApplicationHttpClient
     {
         private static HttpClient httpClient;
-        private static String baseURL = "https://ptsv2.com/t/scud0-1616693073/post";
-        // You can view the "dumps", which are the POST requests (including the JSON data sent) at: https://ptsv2.com/t/scud0-1616693073
 
 
         static MobileApplicationHttpClient()
@@ -59,43 +57,12 @@ namespace Capstone_Group_Project.Services
         }
 
 
-        public static async Task<Type> PostObjectAsynchronouslyAndReturnResultAsSpecificedType<Type>(Object objectToConvertToJson)
-        {
-            String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
-            String responseJsonString = await PostJsonStringAsynchronouslyAndReturnResultAsJsonString(jsonStringRepresentation);
-            // Once we start receiving JSON objects back from the cloud, we can convert them into an instance of a specific class:
-            return JsonConvert.DeserializeObject<Type>(responseJsonString);
-        }
-
-
         public static async Task<Type> PostObjectAsynchronouslyAndReturnResultAsSpecificedType<Type>(Object objectToConvertToJson, String relativeUrl)
         {
             String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
             String responseJsonString = await PostJsonStringAsynchronouslyAndReturnResultAsJsonString(jsonStringRepresentation, relativeUrl);
-            // Once we start receiving JSON objects back from the cloud, we can convert them into an instance of a specific class:
             Type result = JsonConvert.DeserializeObject<Type>(responseJsonString);
             return result;
-        }
-
-
-        private static async Task<String> PostJsonStringAsynchronouslyAndReturnResultAsJsonString(String jsonStringToSend)
-        {
-            StringContent content = new StringContent(jsonStringToSend, Encoding.UTF8, "application/json");
-            try
-            {
-                HttpResponseMessage responseMessage = await httpClient.PostAsync(baseURL, content);
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    String responseJsonString = await responseMessage.Content.ReadAsStringAsync();
-                    return responseJsonString;
-                }
-            }
-            catch (HttpRequestException exception)
-            {
-                Console.WriteLine("\nHttpRequestException Caught!");
-                Console.WriteLine("Message :{0} ", exception.Message);
-            }
-            return null;
         }
 
 
@@ -117,23 +84,6 @@ namespace Capstone_Group_Project.Services
                 Console.WriteLine("Message :{0} ", exception.Message);
             }
             return null;
-        }
-
-
-        public static async void PostObjectAsynchronouslyWithoutWaitingForResponse(Object objectToConvertToJson)
-        {
-            String jsonStringRepresentation = JsonConvert.SerializeObject(objectToConvertToJson);
-            StringContent content = new StringContent(jsonStringRepresentation, Encoding.UTF8, "application/json");
-            try
-            {
-                // We may want to try checking the status code to confirm the HTTP post operation was successful:
-                await httpClient.PostAsync(baseURL, content);
-            }
-            catch (HttpRequestException exception)
-            {
-                Console.WriteLine("\nHttpRequestException Caught!");
-                Console.WriteLine("Message :{0} ", exception.Message);
-            }
         }
 
 
