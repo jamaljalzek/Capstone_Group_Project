@@ -9,32 +9,8 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
 {
     class LoadConversationMessagesHandler
     {
-        private static Message[] RecentlyLoadedMessages = null;
-
-
-        private static void CreateAndReturnTestMessages(int numberOfMessagesToLoad)
-        {
-            RecentlyLoadedMessages = new Message[numberOfMessagesToLoad];
-            DateTime currentDateTime = DateTime.Now;
-            for (int messageNumber = 1; messageNumber <= numberOfMessagesToLoad; ++messageNumber)
-            {
-                Message currentMessage = new Message()
-                {
-                    MessageSenderUsername = "Jamal",
-                    TimeAndDateMessageWasSent = currentDateTime.ToString(),
-                    MessageBody = "TEST MESSAGE #" + messageNumber
-                };
-                RecentlyLoadedMessages[messageNumber - 1] = currentMessage;
-            }
-        }
-
-
         public static async Task<Message[]> LoadInitialMessagesForCurrentConversation(int numberOfMessagesToLoad)
         {
-            // While the cloud is not functional, we can just simply load some dummy messages for the current conversation:
-            //CreateAndReturnTestMessages(numberOfMessagesToLoad);
-            //return RecentlyLoadedMessages;
-
             LoadInitialMessagesAndPrivateKeyRequestObject loadInitialMessagesAndPrivateKeyRequestObject = new LoadInitialMessagesAndPrivateKeyRequestObject(numberOfMessagesToLoad);
             LoadInitialMessagesAndPrivateKeyResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadInitialMessagesAndPrivateKeyResponseObject>(loadInitialMessagesAndPrivateKeyRequestObject, "load_conversation.php");
             String conversationPrivateKey = AsymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(cloudResponseObject.Conversation_Private_Key, CurrentLoginState.GetCurrentUserPrivateKey());
@@ -46,7 +22,6 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
                 String messageCiphertext = currentMessage.MessageBody;
                 currentMessage.MessageBody = SymmetricEncryption.DecryptCiphertextBase64StringToPlaintextString(messageCiphertext, conversationPrivateKey);
             }
-            //Array.Reverse<Message>(cloudResponseObject.Messages);
             CurrentConversationState.SetCurrentConversationInitialSetOfMessages(cloudResponseObject.Messages);
             return cloudResponseObject.Messages;
         }
@@ -54,10 +29,6 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
 
         public static async Task<Message[]> LoadRangeOfMessagesForCurrentConversation(int startingMessageNumberInclusive, int endingMessageNumberInclusive)
         {
-            // While the cloud is not functional, we can just simply load some dummy messages for the current conversation:
-            //CreateAndReturnTestMessages(25);
-            //return RecentlyLoadedMessages;
-
             LoadSpecifiedMessagesRequestObject loadSpecifiedMessagesAndPrivateKeyRequestObject = new LoadSpecifiedMessagesRequestObject(startingMessageNumberInclusive, endingMessageNumberInclusive);
             LoadMessagesResponseObject cloudResponseObject = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnResultAsSpecificedType<LoadMessagesResponseObject>(loadSpecifiedMessagesAndPrivateKeyRequestObject, "load_messages_range.php");
             foreach (Message currentEncryptedMessage in cloudResponseObject.Messages)
@@ -103,8 +74,6 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
 
         private class LoadInitialMessagesAndPrivateKeyResponseObject : CloudCommunicationObject
         {
-            public int Account_ID { get; set; } = 0;
-            public int Conversation_ID { get; set; } = 0;
             public Message[] Messages { get; set; } = null;
             public String Conversation_Private_Key { get; set; } = null;
         }

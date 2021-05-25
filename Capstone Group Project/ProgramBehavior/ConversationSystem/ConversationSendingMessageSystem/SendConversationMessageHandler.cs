@@ -14,18 +14,7 @@ namespace Capstone_Group_Project.ProgramBehavior.ConversationSystem.Conversation
         {
             SendMessageRequestObject sendMessageRequestObject = new SendMessageRequestObject(messageBody, dateAndTimeMessageWasSent);
             HttpStatusCode resultCode = await MobileApplicationHttpClient.PostObjectAsynchronouslyAndReturnHttpResponseCode(sendMessageRequestObject, "send_message.php");
-            if (resultCode == HttpStatusCode.OK)
-            {
-                /*                Message newMessage = new Message()
-                                {
-                                    MessageSenderUsername = null,
-                                    TimeAndDateMessageWasSent = dateAndTimeMessageWasSent.ToString(),
-                                    MessageBody = messageBody
-                                };
-                                CurrentConversationState.AddToCurrentConversationLoadedMessages(newMessage);*/
-                return true;
-            }
-            return false;
+            return resultCode == HttpStatusCode.OK;
         }
 
 

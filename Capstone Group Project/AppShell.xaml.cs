@@ -9,8 +9,6 @@ namespace Capstone_Group_Project
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(ListOfConversationsPage), typeof(ListOfConversationsPage));
             Routing.RegisterRoute(nameof(CreateNewConversationPage), typeof(CreateNewConversationPage));
@@ -22,7 +20,7 @@ namespace Capstone_Group_Project
             this.CurrentItem = new LoginPage();
         }
 
-        private async void OnMenuItemClicked(object sender, EventArgs e)
+        private void OnMenuItemClicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new AppShell();
         }

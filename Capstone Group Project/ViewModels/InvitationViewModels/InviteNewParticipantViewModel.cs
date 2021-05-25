@@ -1,5 +1,4 @@
 ﻿using Capstone_Group_Project.ProgramBehavior.InvitationSystem;
-using Capstone_Group_Project.Views;
 using System;
 using Xamarin.Forms;
 
